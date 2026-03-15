@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ξερή Score App</title>
+  <style>
+    :root {
+      --brown: #6b4319;
+      --text: #4d3624;
+      --line: #8b8b8b;
+      --accent: #7b2cff;
+      --green: #10c060;
+      --red: #c53030;
+      --soft: rgba(255,255,255,0.96);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #d7d1ca;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .app {
+      position: relative;
+      width: 100%;
+      max-width: 430px;
+      min-height: 100vh;
+      overflow: hidden;
+      background: url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=900&q=80') center/cover no-repeat;
+    }
+
+    .overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, rgba(107,67,25,0.96) 0 48%, rgba(255,255,255,0.05) 48% 100%);
+      pointer-events: none;
+    }
+
+    .screen {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      padding: 20px 14px;
+      display: none;
+    }
+
+    .screen.active { display: block; }
+
+    .pill,
+    .white-box,
+    .table-wrap,
+    .top-tag,
+    .dialog,
+    .action-row,
+    .dealer-card,
+    .dealer-mini {
+      background: var(--soft);
+    }
+
+    .home-title {
+      color: white;
+      font-weight: 900;
+      font-size: 2.15rem;
+      line-height: 0.95;
+      margin-top: 42px;
+      margin-left: 18px;
+      width: 150px;
+      text-transform: uppercase;
+    }
+
+    .home-sub {
+      color: #ffcc21;
+      font-weight: 800;
+      margin-left: 18px;
+      margin-top: 10px;
+      font-size: 0.95rem;
+    }
+
+    .home-offer {
+      color: white;
+      font-weight: 10;
+      margin-left: 18px;
+      margin-top: 34px;
+      font-size: 0.5rem;
+    }
+
+    .menu-buttons {
+      margin-top: 72px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      align-items: center;
+    }
+
+    .pill {
+      border: 1.5px solid #3f2e23;
+      border-radius: 16px;
+      width: 78%;
+      min-height: 50px;
+      font-size: 1.15rem;
+      font-weight: 900;
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    .back-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .back-btn {
+      background: #000;
+      color: white;
+      border: 0;
+      padding: 8px 10px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      clip-path: polygon(22% 0, 100% 0, 100% 100%, 22% 100%, 22% 70%, 0 50%, 22% 30%);
+      min-width: 64px;
+    }
+
+    .top-tag {
+      padding: 10px 16px;
+      font-weight: 900;
+      color: var(--text);
+      min-width: 150px;
+      text-align: center;
+      font-size: 1rem;
+    }
+
+    .white-box {
+      margin: 28px auto 18px;
+      width: 88%;
+      padding: 18px 14px;
+      text-align: center;
+      color: var(--text);
+      font-weight: 900;
+      font-size: 1.15rem;
+      line-height: 1.3;
+    }
+
+    .points-list {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      margin-top: 18px;
+      align-items: center;
+    }
+
+    .dealer-card {
+      width: 96%;
+      margin: 14px auto 0;
+      padding: 12px 12px 18px;
+      border: 1px solid var(--line);
+      text-align: center;
+      color: var(--text);
+    }
+
+    .dealer-title {
+      font-size: 0.95rem;
+      font-weight: 900;
+      margin-bottom: 4px;
+    }
+
+    .dealer-name {
+      font-size: 1.15rem;
+      font-weight: 900;
+      margin-bottom: 10px;
+    }
+
+    .dealer-layout {
+      position: relative;
+      width: 220px;
+      height: 250px;
+      margin: 0 auto 12px;
+    }
+
+    .player-dot {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      color: var(--text);
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .player-head {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #111;
+    }
+
+    .player-body {
+      width: 34px;
+      height: 42px;
+      background: #111;
+    }
+
+    .player-dot.active .player-head,
+    .player-dot.active .player-body {
+      background: var(--green);
+    }
+
+    .player-top { left: 92px; top: 0; }
+    .player-left { left: 0; top: 106px; }
+    .player-right { right: 0; top: 106px; }
+    .player-bottom { left: 92px; bottom: 0; }
+
+    .table-center {
+      position: absolute;
+      left: 60px;
+      top: 88px;
+      width: 100px;
+      height: 100px;
+      background: #111;
+    }
+
+    .phone-icon {
+      position: absolute;
+      right: 38px;
+      bottom: 18px;
+      width: 28px;
+      height: 48px;
+      border: 2px solid #444;
+      border-radius: 8px;
+      background: white;
+    }
+
+    .phone-icon::before {
+      content: '';
+      position: absolute;
+      left: 11px;
+      bottom: 3px;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #555;
+    }
+
+    .phone-icon::after {
+      content: '';
+      position: absolute;
+      left: 7px;
+      top: 9px;
+      width: 12px;
+      height: 20px;
+      border-left: 2px solid #555;
+      transform: skew(-20deg);
+    }
+
+    .player-phone {
+      width: 26px;
+      height: 42px;
+      border: 2px solid #444;
+      border-radius: 8px;
+      background: white;
+      position: relative;
+    }
+
+    .player-phone::before {
+      content: '';
+      position: absolute;
+      left: 10px;
+      bottom: 3px;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #555;
+    }
+
+    .player-phone::after {
+      content: '';
+      position: absolute;
+      left: 6px;
+      top: 8px;
+      width: 11px;
+      height: 18px;
+      border-left: 2px solid #555;
+      transform: skew(-20deg);
+    }
+
+    .dealer-btn {
+      border: 0;
+      border-radius: 14px;
+      padding: 12px 16px;
+      font-size: 1rem;
+      font-weight: 900;
+      background: var(--green);
+      color: white;
+      cursor: pointer;
+      min-width: 160px;
+    }
+
+    .table-wrap {
+      width: 96%;
+      margin: 18px auto 0;
+      border: 1px solid var(--line);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 430px;
+    }
+
+    .team-col {
+      display: grid;
+      grid-template-rows: 62px 1fr 66px;
+      min-width: 0;
+    }
+
+    .team-col + .team-col {
+      border-left: 3px solid var(--accent);
+    }
+
+    .team-head,
+    .team-score-area,
+    .team-input-row {
+      border-bottom: 1px solid var(--line);
+    }
+
+    .team-head {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px;
+    }
+
+    .team-name {
+      width: 100%;
+      border: 0;
+      background: transparent;
+      text-align: center;
+      font-size: 1.05rem;
+      font-weight: 900;
+      color: var(--text);
+      outline: none;
+      text-transform: uppercase;
+    }
+
+    .team-score-area {
+      padding: 10px 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      overflow: auto;
+    }
+
+    .total {
+      text-align: center;
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--text);
+      border-bottom: 1px dashed #bbb;
+      padding-bottom: 8px;
+    }
+
+    .rounds {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 1rem;
+      color: var(--text);
+      min-height: 120px;
+    }
+
+    .round-item {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px dotted #ccc;
+      padding-bottom: 4px;
+    }
+
+    .team-input-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px;
+    }
+
+    .score-input {
+      width: 84px;
+      text-align: center;
+      border: 1px solid #aaa;
+      border-radius: 10px;
+      padding: 8px;
+      font-size: 1.2rem;
+      color: var(--text);
+    }
+
+    .action-row {
+      width: 96%;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-left: 1px solid var(--line);
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .action-btn {
+      border: 0;
+      min-height: 56px;
+      font-size: 1.05rem;
+      font-weight: 900;
+      color: white;
+      cursor: pointer;
+    }
+
+    .action-update {
+      background: var(--green);
+      border-right: 2px solid rgba(255,255,255,0.3);
+    }
+
+    .action-correct {
+      background: var(--red);
+    }
+
+    .dealer-mini {
+      width: 96%;
+      margin: 10px auto 0;
+      border: 1px solid var(--line);
+      padding: 8px;
+      color: var(--text);
+    }
+
+    .dealer-mini-title {
+      text-align: center;
+      font-size: 0.82rem;
+      font-weight: 900;
+      margin-bottom: 6px;
+    }
+
+    .dealer-mini-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      align-items: end;
+    }
+
+    .mini-player {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      min-width: 44px;
+    }
+
+    .mini-head {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #111;
+    }
+
+    .mini-body {
+      width: 18px;
+      height: 20px;
+      background: #111;
+    }
+
+    .mini-phone {
+      width: 16px;
+      height: 26px;
+      border: 2px solid #444;
+      border-radius: 5px;
+      background: white;
+      position: relative;
+    }
+
+    .mini-phone::before {
+      content: '';
+      position: absolute;
+      left: 5px;
+      bottom: 1px;
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: #555;
+    }
+
+    .mini-phone::after {
+      content: '';
+      position: absolute;
+      left: 4px;
+      top: 5px;
+      width: 6px;
+      height: 10px;
+      border-left: 2px solid #555;
+      transform: skew(-20deg);
+    }
+
+    .mini-player.active .mini-head,
+    .mini-player.active .mini-body {
+      background: var(--green);
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      padding: 20px;
+    }
+
+    .modal.show { display: flex; }
+
+    .dialog {
+      width: min(340px, 100%);
+      border-radius: 16px;
+      padding: 18px;
+      text-align: center;
+      color: var(--text);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+    }
+
+    .dialog h3 {
+      margin: 0 0 8px;
+      font-size: 1.2rem;
+    }
+
+    .dialog p {
+      margin: 0 0 16px;
+      font-size: 0.96rem;
+      line-height: 1.4;
+    }
+
+    .dialog-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .dialog-actions button {
+      border: 0;
+      border-radius: 12px;
+      padding: 10px 14px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .primary { background: var(--brown); color: white; }
+    .secondary { background: #e9e3dc; color: var(--text); }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="overlay"></div>
+
+    <section class="screen active" id="homeScreen">
+      <div class="home-title">ΚΟΥΚΛΑ</div>
+      <div class="home-sub">Καφεποιείο</div>
+      <div class="home-offer">Created by Kostakis</div>
+
+      <div class="menu-buttons">
+        <button class="pill" id="xeriBtn">ΞΕΡΗ</button>
+        <button class="pill">7-ΑΡΙ/Comming soon</button>
+        <button class="pill">ΚΟΥΓΚΑΣ/Comming soon</button>
+      </div>
+    </section>
+
+    <section class="screen" id="maxScreen">
+      <div class="back-row">
+        <button class="back-btn" id="maxBackBtn">Πίσω</button>
+        <div class="top-tag">ΞΕΡΗ</div>
+      </div>
+
+      <div class="white-box">ΕΠΕΛΕΞΕ ΑΡΙΘΜΟ<br>ΠΟΝΤΩΝ</div>
+
+      <div class="points-list">
+        <button class="pill point-btn" data-max="50">50</button>
+        <button class="pill point-btn" data-max="100">100</button>
+        <button class="pill point-btn" data-max="150">150</button>
+        <button class="pill point-btn" data-max="200">200</button>
+        <button class="pill point-btn" data-max="250">250</button>
+      </div>
+    </section>
+
+    <section class="screen" id="dealerScreen">
+      <div class="back-row">
+        <button class="back-btn" id="dealerBackBtn">Πίσω</button>
+        <div class="top-tag" id="dealerTopTag">ΞΕΡΗ 50</div>
+      </div>
+
+      <div class="dealer-card">
+        <div class="dealer-title">ΜΟΙΡΑΖΕΙ Ο</div>
+        <div class="dealer-name" id="dealerName">ΠΑΙΚΤΗΣ 1</div>
+        <div class="dealer-layout" id="dealerLayoutLarge">
+          <div class="table-center"></div>
+
+          <div class="player-dot player-top" data-pos="0">
+            <div class="player-head"></div>
+            <div class="player-body"></div>
+            <div>Π1</div>
+          </div>
+          <div class="player-dot player-left" data-pos="1">
+            <div class="player-head"></div>
+            <div class="player-body"></div>
+            <div>Π2</div>
+          </div>
+          <div class="player-dot player-bottom" data-pos="2">
+            <div class="player-head"></div>
+            <div class="player-phone"></div>
+            <div>Π3</div>
+          </div>
+          <div class="player-dot player-right" data-pos="3">
+            <div class="player-head"></div>
+            <div class="player-body"></div>
+            <div>Π4</div>
+          </div>
+        </div>
+        <button class="dealer-btn" id="dealerContinueBtn">ΣΥΝΕΧΕΙΑ</button>
+      </div>
+    </section>
+
+    <section class="screen" id="gameScreen">
+      <div class="back-row">
+        <button class="back-btn" id="gameBackBtn">Πίσω</button>
+        <div class="top-tag" id="gameTopTag">ΞΕΡΗ 50</div>
+      </div>
+
+      <div class="table-wrap">
+        <div class="team-col">
+          <div class="team-head"><input class="team-name" id="team1Name" value="ΟΜΑΔΑ 1"></div>
+          <div class="team-score-area">
+            <div class="total" id="team1Total">0</div>
+            <div class="rounds" id="team1Rounds"></div>
+          </div>
+          <div class="team-input-row">
+            <input class="score-input" id="team1Input" type="number" min="0" step="5" placeholder="0">
+          </div>
+        </div>
+
+        <div class="team-col">
+          <div class="team-head"><input class="team-name" id="team2Name" value="ΟΜΑΔΑ 2"></div>
+          <div class="team-score-area">
+            <div class="total" id="team2Total">0</div>
+            <div class="rounds" id="team2Rounds"></div>
+          </div>
+          <div class="team-input-row">
+            <input class="score-input" id="team2Input" type="number" min="0" step="5" placeholder="0">
+          </div>
+        </div>
+      </div>
+
+      <div class="action-row">
+        <button class="action-btn action-update" id="updateRoundBtn">ΕΝΗΜΕΡΩΣΗ</button>
+        <button class="action-btn action-correct" id="correctRoundBtn">ΔΙΟΡΘΩΣΗ</button>
+      </div>
+
+      <div class="dealer-mini">
+        <div class="dealer-mini-title">Μοιράζει</div>
+        <div class="dealer-mini-row" id="dealerMiniRow">
+          <div class="mini-player" data-pos="0"><div class="mini-head"></div><div class="mini-body"></div><div>Π1</div></div>
+          <div class="mini-player" data-pos="1"><div class="mini-head"></div><div class="mini-body"></div><div>Π2</div></div>
+          <div class="mini-player" data-pos="2"><div class="mini-head"></div><div class="mini-phone"></div><div>Π3</div></div>
+          <div class="mini-player" data-pos="3"><div class="mini-head"></div><div class="mini-body"></div><div>Π4</div></div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="modal" id="confirmModal">
+    <div class="dialog">
+      <h3>Επιβεβαίωση</h3>
+      <p id="confirmText">Are you sure?</p>
+      <div class="dialog-actions">
+        <button class="secondary" id="cancelConfirm">Άκυρο</button>
+        <button class="primary" id="okConfirm">Ναι</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="winnerModal">
+    <div class="dialog">
+      <h3>Τέλος παιχνιδιού</h3>
+      <p id="winnerText">Team won</p>
+      <div class="dialog-actions">
+        <button class="primary" id="winnerOk">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const state = {
+      maxPoints: 50,
+      team1Name: 'ΟΜΑΔΑ 1',
+      team2Name: 'ΟΜΑΔΑ 2',
+      team1Rounds: [],
+      team2Rounds: [],
+      pendingAction: null,
+      currentDealer: 0
+    };
+
+    const screens = {
+      home: document.getElementById('homeScreen'),
+      max: document.getElementById('maxScreen'),
+      dealer: document.getElementById('dealerScreen'),
+      game: document.getElementById('gameScreen')
+    };
+
+    const team1Name = document.getElementById('team1Name');
+    const team2Name = document.getElementById('team2Name');
+    const team1Total = document.getElementById('team1Total');
+    const team2Total = document.getElementById('team2Total');
+    const team1Rounds = document.getElementById('team1Rounds');
+    const team2Rounds = document.getElementById('team2Rounds');
+    const team1Input = document.getElementById('team1Input');
+    const team2Input = document.getElementById('team2Input');
+    const gameTopTag = document.getElementById('gameTopTag');
+    const dealerTopTag = document.getElementById('dealerTopTag');
+    const dealerName = document.getElementById('dealerName');
+
+    const confirmModal = document.getElementById('confirmModal');
+    const confirmText = document.getElementById('confirmText');
+    const winnerModal = document.getElementById('winnerModal');
+    const winnerText = document.getElementById('winnerText');
+
+    function showScreen(name) {
+      Object.values(screens).forEach(s => s.classList.remove('active'));
+      screens[name].classList.add('active');
+    }
+
+    function totalOf(rounds) {
+      return rounds.reduce((sum, value) => sum + value, 0);
+    }
+
+    function syncNames() {
+      state.team1Name = team1Name.value.trim() || 'ΟΜΑΔΑ 1';
+      state.team2Name = team2Name.value.trim() || 'ΟΜΑΔΑ 2';
+    }
+
+    function dealerLabel(pos) {
+      return `ΠΑΙΚΤΗΣ ${pos + 1}`;
+    }
+
+    function renderDealer() {
+      dealerTopTag.textContent = `ΞΕΡΗ ${state.maxPoints}`;
+      dealerName.textContent = dealerLabel(state.currentDealer);
+      document.querySelectorAll('#dealerLayoutLarge .player-dot').forEach(el => {
+        el.classList.toggle('active', Number(el.dataset.pos) === state.currentDealer);
+      });
+      document.querySelectorAll('#dealerMiniRow .mini-player').forEach(el => {
+        el.classList.toggle('active', Number(el.dataset.pos) === state.currentDealer);
+      });
+    }
+
+    function render() {
+      syncNames();
+      const t1 = totalOf(state.team1Rounds);
+      const t2 = totalOf(state.team2Rounds);
+
+      gameTopTag.textContent = `ΞΕΡΗ ${state.maxPoints}`;
+      team1Total.textContent = t1;
+      team2Total.textContent = t2;
+
+      renderRounds(team1Rounds, state.team1Rounds);
+      renderRounds(team2Rounds, state.team2Rounds);
+      renderDealer();
+    }
+
+    function renderRounds(container, rounds) {
+      container.innerHTML = '';
+      if (!rounds.length) {
+        container.innerHTML = '<div class="round-item"><span>—</span><span>κανένας γύρος</span></div>';
+        return;
+      }
+      rounds.forEach((value, index) => {
+        const div = document.createElement('div');
+        div.className = 'round-item';
+        div.innerHTML = `<span>R${index + 1}</span><span>${value}</span>`;
+        container.appendChild(div);
+      });
+    }
+
+    function resetGame() {
+      state.team1Rounds = [];
+      state.team2Rounds = [];
+      state.currentDealer = Math.floor(Math.random() * 4);
+      team1Input.value = '';
+      team2Input.value = '';
+      team1Name.value = 'ΟΜΑΔΑ 1';
+      team2Name.value = 'ΟΜΑΔΑ 2';
+      state.team1Name = 'ΟΜΑΔΑ 1';
+      state.team2Name = 'ΟΜΑΔΑ 2';
+      render();
+      showScreen('home');
+    }
+
+    function validPair(v1, v2) {
+      const sum = v1 + v2;
+      return sum >= 25 && sum % 5 === 0;
+    }
+
+    function updateRound() {
+      syncNames();
+      const v1 = Number(team1Input.value);
+      const v2 = Number(team2Input.value);
+
+      if (!team1Input.value || !team2Input.value) {
+        alert('Βάλε σκορ και για τις δύο ομάδες.');
+        return;
+      }
+
+      if (Number.isNaN(v1) || Number.isNaN(v2) || v1 < 0 || v2 < 0) {
+        alert('Βάλε σωστά σκορ.');
+        return;
+      }
+
+      const sum = v1 + v2;
+      if (sum < 25) {
+        alert('Το άθροισμα του γύρου δεν μπορεί να είναι μικρότερο από 25.');
+        return;
+      }
+
+      if (!validPair(v1, v2)) {
+        alert('Το σύνολο των δύο ομάδων πρέπει να διαιρείται με το 5.');
+        return;
+      }
+
+      state.team1Rounds.push(v1);
+      state.team2Rounds.push(v2);
+      state.currentDealer = (state.currentDealer + 1) % 4;
+      team1Input.value = '';
+      team2Input.value = '';
+      render();
+      checkWinner();
+    }
+
+    function confirmAction(text, action) {
+      state.pendingAction = action;
+      confirmText.textContent = text;
+      confirmModal.classList.add('show');
+    }
+
+    function checkWinner() {
+      const t1 = totalOf(state.team1Rounds);
+      const t2 = totalOf(state.team2Rounds);
+
+      if (t1 >= state.maxPoints) {
+        winnerText.textContent = `Team ${state.team1Name} won`;
+        winnerModal.classList.add('show');
+      } else if (t2 >= state.maxPoints) {
+        winnerText.textContent = `Team ${state.team2Name} won`;
+        winnerModal.classList.add('show');
+      }
+    }
+
+    document.getElementById('xeriBtn').addEventListener('click', () => showScreen('max'));
+    document.getElementById('maxBackBtn').addEventListener('click', () => showScreen('home'));
+    document.getElementById('dealerBackBtn').addEventListener('click', () => showScreen('max'));
+    document.getElementById('dealerContinueBtn').addEventListener('click', () => showScreen('game'));
+
+    document.querySelectorAll('.point-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        state.maxPoints = Number(btn.dataset.max);
+        state.team1Rounds = [];
+        state.team2Rounds = [];
+        state.currentDealer = Math.floor(Math.random() * 4);
+        team1Input.value = '';
+        team2Input.value = '';
+        render();
+        showScreen('dealer');
+      });
+    });
+
+    document.getElementById('gameBackBtn').addEventListener('click', () => {
+      confirmAction('Are you sure?', () => {
+        state.team1Rounds = [];
+        state.team2Rounds = [];
+        render();
+        showScreen('home');
+      });
+    });
+
+    document.getElementById('updateRoundBtn').addEventListener('click', updateRound);
+
+    document.getElementById('correctRoundBtn').addEventListener('click', () => {
+      if (!state.team1Rounds.length || !state.team2Rounds.length) {
+        alert('Δεν υπάρχει προηγούμενος γύρος για διόρθωση.');
+        return;
+      }
+      confirmAction('Are you sure?', () => {
+        state.team1Rounds.pop();
+        state.team2Rounds.pop();
+        state.currentDealer = (state.currentDealer + 3) % 4;
+        render();
+      });
+    });
+
+    team1Name.addEventListener('input', render);
+    team2Name.addEventListener('input', render);
+
+    document.getElementById('cancelConfirm').addEventListener('click', () => {
+      confirmModal.classList.remove('show');
+      state.pendingAction = null;
+    });
+
+    document.getElementById('okConfirm').addEventListener('click', () => {
+      confirmModal.classList.remove('show');
+      if (state.pendingAction) state.pendingAction();
+      state.pendingAction = null;
+    });
+
+    document.getElementById('winnerOk').addEventListener('click', () => {
+      winnerModal.classList.remove('show');
+      resetGame();
+    });
+
+    state.currentDealer = Math.floor(Math.random() * 4);
+    render();
+  </script>
+</body>
+</html>
