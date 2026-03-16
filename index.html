@@ -121,7 +121,25 @@
       color: var(--text);
       cursor: pointer;
     }
+.social-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
 
+.social-icon {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
+
+.youtube-note {
+  font-size: 0.72rem;
+  color: white;
+  text-align: center;
+  max-width: 130px;
+}
     .pill {
       border: 1.5px solid #3f2e23;
       border-radius: 16px;
@@ -250,6 +268,7 @@
       height: 100px;
       background: #111;
     }
+ 
 
     .player-phone {
       width: 26px;
@@ -644,50 +663,7 @@
       font-weight: 800;
       cursor: pointer;
     }
-.social-row {
-  margin-top: 24px;
-  display: flex;
-  gap: 12px;
-  justify-content: center;
-  flex-wrap: wrap;
-}
 
-.social-wrap {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-}
-
-.social-btn {
-  border: 1.5px solid #3f2e23;
-  border-radius: 14px;
-  min-width: 130px;
-  min-height: 44px;
-  padding: 8px 14px;
-  font-size: 0.95rem;
-  font-weight: 900;
-  color: var(--text);
-  cursor: pointer;
-  background: var(--soft);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-
-.social-icon {
-  width: 22px;
-  height: 22px;
-  object-fit: contain;
-}
-
-.youtube-note {
-  font-size: 0.72rem;
-  color: white;
-  text-align: center;
-  max-width: 130px;
-}
     .primary { background: var(--brown); color: white; }
     .secondary { background: #e9e3dc; color: var(--text); }
   </style>
@@ -731,7 +707,7 @@
     <div class="youtube-note">Βάλε των μωρών να ποσκολιούντε</div>
   </div>
 </div>
-
+</section>
     <section class="screen" id="maxScreen">
       <div class="back-row">
         <button class="back-btn" id="maxBackBtn">Πίσω</button>
