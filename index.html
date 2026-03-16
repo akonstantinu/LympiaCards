@@ -930,9 +930,13 @@
     const winnerModal = document.getElementById('winnerModal');
     const winnerText = document.getElementById('winnerText');
 
-    function showScreen(name) {
+    function showScreen(name, addToHistory = true) {
       Object.values(screens).forEach(s => s.classList.remove('active'));
       screens[name].classList.add('active');
+
+      if (addToHistory) {
+        history.pushState({ screen: name }, '', `#${name}`);
+      }
     }
 
     function totalOf(rounds) {
@@ -1144,7 +1148,9 @@
       }
 
       state.sevenAri.rounds.push(values);
-      state.currentDealer = (state.currentDealer + 1) % 4;
+      if (state.sevenAri.currentRound % 2 === 0) {
+         state.currentDealer = (state.currentDealer + 1) % 4;
+      }
       state.sevenAri.currentRound += 1;
       pInputEls.forEach(el => el.value = '');
 
@@ -1236,7 +1242,9 @@
       confirmAction('Are you sure?', () => {
         state.team1Rounds.pop();
         state.team2Rounds.pop();
-        state.currentDealer = (state.currentDealer + 3) % 4;
+        if ((state.sevenAri.currentRound - 1) % 2 === 0) {
+           state.currentDealer = (state.currentDealer + 3) % 4;
+        }
         renderAll();
       });
     });
@@ -1246,15 +1254,21 @@
         alert('Δεν υπάρχει προηγούμενος γύρος για διόρθωση.');
         return;
       }
+
       confirmAction('Are you sure?', () => {
+        const removedRound = state.sevenAri.currentRound - 1;
+
         state.sevenAri.rounds.pop();
+
+        if (removedRound % 2 === 0) {
+          state.currentDealer = (state.currentDealer + 3) % 4;
+        }
+
         state.sevenAri.currentRound = Math.max(1, state.sevenAri.currentRound - 1);
         state.sevenAri.rankingReady = false;
-        state.currentDealer = (state.currentDealer + 3) % 4;
         renderAll();
       });
     });
-
     team1Name.addEventListener('input', renderAll);
     team2Name.addEventListener('input', renderAll);
     pNameInputs.forEach(input => input.addEventListener('input', renderAll));
@@ -1274,7 +1288,26 @@
       winnerModal.classList.remove('show');
       resetToHome();
     });
+    window.addEventListener('popstate', (event) => {
+      const targetScreen = event.state?.screen || 'home';
+      const currentScreen = Object.keys(screens).find(
+        key => screens[key].classList.contains('active')
+      );
 
+      if (currentScreen === 'xeri' || currentScreen === 'seven') {
+        confirmAction('Are you sure?', () => {
+          Object.values(screens).forEach(s => s.classList.remove('active'));
+          screens[targetScreen].classList.add('active');
+        });
+
+        history.pushState({ screen: currentScreen }, '', `#${currentScreen}`);
+        return;
+      }
+
+      Object.values(screens).forEach(s => s.classList.remove('active'));
+      screens[targetScreen].classList.add('active');
+    });
+    history.replaceState({ screen: 'home' }, '', '#home');
     state.currentDealer = Math.floor(Math.random() * 4);
     renderAll();
   </script>
