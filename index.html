@@ -13,6 +13,7 @@
       --green: #10c060;
       --red: #c53030;
       --soft: rgba(255,255,255,0.96);
+      --even-bg: rgba(210,210,210,0.96);
     }
 
     * { box-sizing: border-box; }
@@ -61,7 +62,8 @@
     .dealer-card,
     .dealer-mini,
     .ranking-box,
-    .round-badge {
+    .round-badge,
+    .social-btn {
       background: var(--soft);
     }
 
@@ -98,6 +100,26 @@
       flex-direction: column;
       gap: 18px;
       align-items: center;
+    }
+
+    .social-row {
+      margin-top: 24px;
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .social-btn {
+      border: 1.5px solid #3f2e23;
+      border-radius: 14px;
+      min-width: 130px;
+      min-height: 44px;
+      padding: 10px 16px;
+      font-size: 0.95rem;
+      font-weight: 900;
+      color: var(--text);
+      cursor: pointer;
     }
 
     .pill {
@@ -288,6 +310,15 @@
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       min-height: 430px;
+      transition: background-color 0.2s ease;
+    }
+
+    .table-wrap.four-col.even-round {
+      background: var(--even-bg);
+    }
+
+    .table-wrap.four-col.odd-round {
+      background: var(--soft);
     }
 
     .team-col {
@@ -300,6 +331,7 @@
       display: grid;
       grid-template-rows: 42px 1fr 44px;
       min-width: 0;
+      background: transparent;
     }
 
     .team-col + .team-col,
@@ -348,6 +380,7 @@
       flex-direction: column;
       gap: 10px;
       overflow: auto;
+      background: transparent;
     }
 
     .total {
@@ -390,6 +423,7 @@
       align-items: center;
       justify-content: center;
       padding: 8px;
+      background: transparent;
     }
 
     .score-input {
@@ -527,6 +561,14 @@
       color: var(--text);
     }
 
+    .round-badge.even-round {
+      background: var(--even-bg);
+    }
+
+    .round-badge.odd-round {
+      background: var(--soft);
+    }
+
     .ranking-box {
       width: 96%;
       margin: 14px auto 0;
@@ -620,6 +662,11 @@
         <button class="pill" id="xeriBtn">ΞΕΡΗ</button>
         <button class="pill" id="sevenAriBtn">7-ΑΡΙ</button>
         <button class="pill">ΚΟΥΓΚΑΣ/Comming soon</button>
+      </div>
+
+      <div class="social-row">
+        <button class="social-btn" id="instagramBtn">Instagram</button>
+        <button class="social-btn" id="youtubeBtn">YouTube</button>
       </div>
     </section>
 
@@ -729,9 +776,9 @@
         <div class="top-tag">7-ΑΡΙ</div>
       </div>
 
-      <div class="round-badge" id="sevenRoundBadge">Γύρος 1 / 10</div>
+      <div class="round-badge odd-round" id="sevenRoundBadge">Γύρος 1 / 10 — Μονός γύρος</div>
 
-      <div class="table-wrap four-col">
+      <div class="table-wrap four-col odd-round" id="sevenTableWrap">
         <div class="player-col">
           <div class="player-head-row"><input class="player-name" id="p1Name" value="Π1"></div>
           <div class="player-score-area">
@@ -873,6 +920,7 @@
       document.getElementById('p4Input')
     ];
     const sevenRoundBadge = document.getElementById('sevenRoundBadge');
+    const sevenTableWrap = document.getElementById('sevenTableWrap');
     const rankingBox = document.getElementById('rankingBox');
     const rankingList = document.getElementById('rankingList');
     const rankingNote = document.getElementById('rankingNote');
@@ -933,7 +981,13 @@
       const totals = [0, 1, 2, 3].map(i => state.sevenAri.rounds.reduce((sum, round) => sum + round[i], 0));
       pTotalEls.forEach((el, i) => el.textContent = totals[i]);
       pRoundsEls.forEach((el, i) => renderRounds(el, state.sevenAri.rounds.map(round => round[i])));
-      sevenRoundBadge.textContent = `Γύρος ${Math.min(state.sevenAri.currentRound, 10)} / 10`;
+      const currentRound = Math.min(state.sevenAri.currentRound, 10);
+      const isEvenRound = currentRound % 2 === 0;
+      sevenRoundBadge.textContent = `Γύρος ${currentRound} / 10 — ${isEvenRound ? 'Ταϊστό' : 'Εφταρί'}`;
+      sevenRoundBadge.classList.toggle('even-round', isEvenRound);
+      sevenRoundBadge.classList.toggle('odd-round', !isEvenRound);
+      sevenTableWrap.classList.toggle('even-round', isEvenRound);
+      sevenTableWrap.classList.toggle('odd-round', !isEvenRound);
       if (state.sevenAri.rankingReady) {
         renderRanking(totals);
       } else {
@@ -1063,9 +1117,7 @@
         alert('Βάλε τουλάχιστον 3 σκορ.');
         return;
       }
-      if (filledIndices.length === 4) {
-        // ok
-      } else if (filledIndices.length === 3) {
+      if (filledIndices.length === 3) {
         const missing = rawValues.findIndex(v => v === null);
         const knownSum = rawValues.filter(v => v !== null).reduce((a, b) => a + b, 0);
         rawValues[missing] = -32 - knownSum;
@@ -1092,7 +1144,6 @@
       }
 
       state.sevenAri.rounds.push(values);
-      state.sevenAri.currentDealer = undefined;
       state.currentDealer = (state.currentDealer + 1) % 4;
       state.sevenAri.currentRound += 1;
       pInputEls.forEach(el => el.value = '');
@@ -1133,6 +1184,14 @@
       state.currentDealer = Math.floor(Math.random() * 4);
       renderAll();
       showScreen('dealer');
+    });
+
+    document.getElementById('instagramBtn').addEventListener('click', () => {
+      window.open('https://www.instagram.com/kafepoieiokoukla/', '_blank');
+    });
+
+    document.getElementById('youtubeBtn').addEventListener('click', () => {
+      window.open('https://www.youtube.com/@AstroKafeneion', '_blank');
     });
 
     document.getElementById('maxBackBtn').addEventListener('click', () => showScreen('home'));
