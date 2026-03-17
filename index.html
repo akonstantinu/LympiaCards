@@ -27,14 +27,13 @@
       min-height: 100vh;
     }
 
-    .app {
-      position: relative;
-      width: 100%;
-      max-width: 430px;
-      min-height: 100vh;
-      overflow: hidden;
-      background: url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=900&q=80') center/cover no-repeat;
-    }
+.app {
+  position: relative;
+  width: 100%;
+  max-width: 430px;
+  min-height: 100vh;
+  overflow: hidden;
+}
 
     .overlay {
       position: absolute;
@@ -53,7 +52,6 @@
 
     .screen.active { display: block; }
 
-    .pill,
     .white-box,
     .table-wrap,
     .top-tag,
@@ -62,93 +60,8 @@
     .dealer-card,
     .dealer-mini,
     .ranking-box,
-    .round-badge,
-    .social-btn {
+    .round-badge {
       background: var(--soft);
-    }
-
-    .home-title {
-      color: white;
-      font-weight: 900;
-      font-size: 2.15rem;
-      line-height: 0.95;
-      margin-top: 42px;
-      margin-left: 18px;
-      width: 150px;
-      text-transform: uppercase;
-    }
-
-    .home-sub {
-      color: #ffcc21;
-      font-weight: 800;
-      margin-left: 18px;
-      margin-top: 10px;
-      font-size: 0.95rem;
-    }
-
-    .home-offer {
-      color: white;
-      font-weight: 10;
-      margin-left: 18px;
-      margin-top: 34px;
-      font-size: 0.5rem;
-    }
-
-    .menu-buttons {
-      margin-top: 72px;
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
-      align-items: center;
-    }
-
-    .social-row {
-      margin-top: 24px;
-      display: flex;
-      gap: 12px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .social-btn {
-      border: 1.5px solid #3f2e23;
-      border-radius: 14px;
-      min-width: 130px;
-      min-height: 44px;
-      padding: 10px 16px;
-      font-size: 0.95rem;
-      font-weight: 900;
-      color: var(--text);
-      cursor: pointer;
-    }
-.social-wrap {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-}
-
-.social-icon {
-  width: 22px;
-  height: 22px;
-  object-fit: contain;
-}
-
-.youtube-note {
-  font-size: 0.72rem;
-  color: white;
-  text-align: center;
-  max-width: 130px;
-}
-    .pill {
-      border: 1.5px solid #3f2e23;
-      border-radius: 16px;
-      width: 78%;
-      min-height: 50px;
-      font-size: 1.15rem;
-      font-weight: 900;
-      color: var(--text);
-      cursor: pointer;
     }
 
     .back-row {
@@ -196,6 +109,18 @@
       gap: 18px;
       margin-top: 18px;
       align-items: center;
+    }
+
+    .pill {
+      border: 1.5px solid #3f2e23;
+      border-radius: 16px;
+      width: 78%;
+      min-height: 50px;
+      font-size: 1.15rem;
+      font-weight: 900;
+      color: var(--text);
+      background: var(--soft);
+      cursor: pointer;
     }
 
     .dealer-card {
@@ -268,7 +193,6 @@
       height: 100px;
       background: #111;
     }
- 
 
     .player-phone {
       width: 26px;
@@ -666,48 +590,177 @@
 
     .primary { background: var(--brown); color: white; }
     .secondary { background: #e9e3dc; color: var(--text); }
+
+    /* Landing page */
+.landing-screen {
+  padding: 0;
+  background: #111;
+}
+
+.landing-image-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 430px;
+  min-height: 100vh;
+  margin: 0 auto;
+  background: #000;
+}
+
+.landing-image {
+  display: block;
+  width: 100%;
+  min-height: 100vh;
+  object-fit: cover;
+}
+.landing-bottom-title {
+  position: absolute;
+  left: 8%;
+  top: 74.5%;
+  color: white;
+  font-size: 1.75rem;
+  font-weight: 900;
+  line-height: 1.15;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.7);
+  z-index: 2;
+}
+    .landing-btn {
+      position: absolute;
+      border: 2px solid #cfcfcf;
+      background: #000;
+      color: #fff;
+      font-weight: 900;
+      font-size: 1.1rem;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+    }
+
+    .landing-btn:hover,
+    .landing-fun-btn:hover {
+      filter: brightness(1.08);
+    }
+
+    .btn-xeri {
+      left: 31.5%;
+      top: 24.8%;
+      width: 43%;
+      height: 6.3%;
+    }
+
+    .btn-seven {
+      left: 31.5%;
+      top: 33.3%;
+      width: 43%;
+      height: 6.3%;
+    }
+
+    .btn-menu {
+      left: 9%;
+      top: 53%;
+      width: 40%;
+      height: 5.8%;
+      font-size: 1rem;
+    }
+
+    .btn-events {
+      left: 9%;
+      top: 63.2%;
+      width: 40%;
+      height: 5.8%;
+      font-size: 1rem;
+    }
+
+.landing-fun-row {
+  position: absolute;
+  left: 8%;
+  top: 86.5%;
+  display: flex;
+  gap: 6%;
+  width: 42%;
+  justify-content: flex-start;
+  z-index: 2;
+}
+
+    .landing-fun-btn {
+      width: 42%;
+      aspect-ratio: 1 / 1;
+      border: 2px solid #111;
+      background: rgba(255,255,255,0.75);
+      cursor: pointer;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .landing-fun-btn img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    .drink-list {
+      text-align: left;
+      line-height: 1.8;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    @media (max-width: 390px) {
+      .landing-btn {
+        font-size: 1rem;
+      }
+    }
   </style>
 </head>
 <body>
   <div class="app">
     <div class="overlay"></div>
 
-    <section class="screen active" id="homeScreen">
-      <div class="home-title">ΚΟΥΚΛΑ</div>
-      <div class="home-sub">Καφεποιείο</div>
-      <div class="home-offer">Created by Kostakis v.1</div>
+    <section class="screen active landing-screen" id="homeScreen">
+      <div class="landing-image-wrap">
+          <div class="landing-bottom-title">Περισσότερη<br>διασκέδαση</div>
+        <img class="landing-image" src="home-landing.png" alt="Κούκλα καφεποιείο αρχική σελίδα">
 
-      <div class="menu-buttons">
-        <button class="pill" id="xeriBtn">ΞΕΡΗ</button>
-        <button class="pill" id="sevenAriBtn">7-ΑΡΙ</button>
-        <button class="pill">ΚΟΥΓΚΑΣ/Comming soon</button>
+
+  <button class="landing-btn btn-xeri" id="xeriBtn">ΞΕΡΗ</button>
+  <button class="landing-btn btn-seven" id="sevenAriBtn">7-ΑΡΙ</button>
+  <button class="landing-btn btn-menu" id="menuBtn">MENU</button>
+  <button class="landing-btn btn-events" id="eventsBtn">EVENTS</button>
+
+        <div class="landing-fun-row">
+          <button class="landing-fun-btn" id="podcastBtn" aria-label="Podcast">
+            <img src="podcast.png" alt="Podcast">
+          </button>
+          <button class="landing-fun-btn" id="videogameBtn" aria-label="Videogame">
+            <img src="videogame.png" alt="Videogame">
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="screen" id="drinkMenuScreen">
+      <div class="back-row">
+        <button class="back-btn" id="drinkMenuBackBtn">Πίσω</button>
+        <div class="top-tag">MENU</div>
       </div>
 
-<div class="social-row">
-  <div class="social-wrap">
-    <button class="social-btn" id="instagramBtn">
-      <img
-        class="social-icon"
-        src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png"
-        alt="Instagram"
-      >
-      <span>Instagram</span>
-    </button>
-  </div>
+      <div class="white-box">
+        <div class="drink-list">
+          Espresso — 2.00€<br>
+          Cappuccino — 3.00€<br>
+          Freddo Espresso — 2.80€<br>
+          Freddo Cappuccino — 3.30€<br>
+          Ελληνικός — 2.00€<br>
+          Americano — 2.50€<br>
+          Σοκολάτα — 3.00€<br>
+          Τσάι — 2.50€<br>
+          Αναψυκτικά — 2.50€<br>
+          Τοστ — 3.50€<br>
+          Club Sandwich — 6.00€
+        </div>
+      </div>
+    </section>
 
-  <div class="social-wrap">
-    <button class="social-btn" id="youtubeBtn">
-      <img
-        class="social-icon"
-        src="https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg"
-        alt="YouTube"
-      >
-      <span>YouTube</span>
-    </button>
-    <div class="youtube-note">Βάλε των μωρών να ποσκολιούντε</div>
-  </div>
-</div>
-</section>
     <section class="screen" id="maxScreen">
       <div class="back-row">
         <button class="back-btn" id="maxBackBtn">Πίσω</button>
@@ -915,6 +968,7 @@
 
     const screens = {
       home: document.getElementById('homeScreen'),
+      drinkMenu: document.getElementById('drinkMenuScreen'),
       max: document.getElementById('maxScreen'),
       dealer: document.getElementById('dealerScreen'),
       xeri: document.getElementById('xeriGameScreen'),
@@ -998,10 +1052,15 @@
       const title = state.currentGame === 'seven' ? '7-ΑΡΙ' : `ΞΕΡΗ ${state.maxPoints}`;
       dealerTopTag.textContent = title;
       dealerName.textContent = dealerLabel(state.currentDealer);
+
       document.querySelectorAll('#dealerLayoutLarge .player-dot').forEach(el => {
         el.classList.toggle('active', Number(el.dataset.pos) === state.currentDealer);
       });
-      const miniRowId = state.currentGame === 'seven' ? '#dealerMiniRowSeven .mini-player' : '#dealerMiniRowXeri .mini-player';
+
+      const miniRowId = state.currentGame === 'seven'
+        ? '#dealerMiniRowSeven .mini-player'
+        : '#dealerMiniRowXeri .mini-player';
+
       document.querySelectorAll(miniRowId).forEach(el => {
         el.classList.toggle('active', Number(el.dataset.pos) === state.currentDealer);
       });
@@ -1020,16 +1079,22 @@
 
     function renderSeven() {
       syncSevenNames();
-      const totals = [0, 1, 2, 3].map(i => state.sevenAri.rounds.reduce((sum, round) => sum + round[i], 0));
+      const totals = [0, 1, 2, 3].map(i =>
+        state.sevenAri.rounds.reduce((sum, round) => sum + round[i], 0)
+      );
+
       pTotalEls.forEach((el, i) => el.textContent = totals[i]);
       pRoundsEls.forEach((el, i) => renderRounds(el, state.sevenAri.rounds.map(round => round[i])));
+
       const currentRound = Math.min(state.sevenAri.currentRound, 10);
       const isEvenRound = currentRound % 2 === 0;
+
       sevenRoundBadge.textContent = `Γύρος ${currentRound} / 10 — ${isEvenRound ? 'Ταϊστό' : 'Εφταρί'}`;
       sevenRoundBadge.classList.toggle('even-round', isEvenRound);
       sevenRoundBadge.classList.toggle('odd-round', !isEvenRound);
       sevenTableWrap.classList.toggle('even-round', isEvenRound);
       sevenTableWrap.classList.toggle('odd-round', !isEvenRound);
+
       if (state.sevenAri.rankingReady) {
         renderRanking(totals);
       } else {
@@ -1038,14 +1103,17 @@
     }
 
     function renderRanking(totals) {
-      const ranking = totals.map((score, i) => ({ name: state.sevenAri.names[i], score }))
+      const ranking = totals
+        .map((score, i) => ({ name: state.sevenAri.names[i], score }))
         .sort((a, b) => b.score - a.score);
+
       rankingList.innerHTML = '';
       ranking.forEach(item => {
         const li = document.createElement('li');
         li.textContent = `${item.name} — ${item.score}`;
         rankingList.appendChild(li);
       });
+
       rankingNote.textContent = `${ranking[ranking.length - 1].name} is the looser.`;
       rankingBox.classList.add('show');
     }
@@ -1056,6 +1124,7 @@
         container.innerHTML = '<div class="round-item"><span>—</span><span>κανένας γύρος</span></div>';
         return;
       }
+
       rounds.forEach((value, index) => {
         const div = document.createElement('div');
         div.className = 'round-item';
@@ -1123,6 +1192,7 @@
         alert('Βάλε σωστά σκορ.');
         return;
       }
+
       const sum = v1 + v2;
       if (sum < 25) {
         alert('Το άθροισμα του γύρου δεν μπορεί να είναι μικρότερο από 25.');
@@ -1132,6 +1202,7 @@
         alert('Το σύνολο των δύο ομάδων πρέπει να διαιρείται με το 5.');
         return;
       }
+
       state.team1Rounds.push(v1);
       state.team2Rounds.push(v2);
       state.currentDealer = (state.currentDealer + 1) % 4;
@@ -1149,47 +1220,49 @@
 
       syncSevenNames();
       const rawValues = pInputEls.map(el => parseMaybeInt(el.value));
+
       if (rawValues.some(v => Number.isNaN(v))) {
         alert('Βάλε σωστούς ακέραιους αριθμούς.');
         return;
       }
 
-    const roundNo = state.sevenAri.currentRound;
-    const filledIndices = rawValues.map((v, i) => v === null ? null : i).filter(v => v !== null);
+      const roundNo = state.sevenAri.currentRound;
+      const filledIndices = rawValues.map((v, i) => v === null ? null : i).filter(v => v !== null);
 
-    if (filledIndices.length < 3) {
-      alert('Βάλε τουλάχιστον 3 σκορ.');
-      return;
-    }
-
-    if (filledIndices.length === 3) {
-      const missing = rawValues.findIndex(v => v === null);
-      const knownValues = rawValues.filter(v => v !== null);
-
-      if (roundNo % 2 === 1) {
-        const allowed = [32, 16, 8, 4];
-        const missingValue = allowed.find(v => !knownValues.includes(v));
-
-        if (missingValue === undefined) {
-          alert('Στους μονούς γύρους δεν βρέθηκε σωστή 4η τιμή.');
-          return;
-        }
-
-        rawValues[missing] = missingValue;
-        pInputEls[missing].value = missingValue;
-      } else {
-        const knownSum = knownValues.reduce((a, b) => a + b, 0);
-        rawValues[missing] = -32 - knownSum;
-        pInputEls[missing].value = rawValues[missing];
+      if (filledIndices.length < 3) {
+        alert('Βάλε τουλάχιστον 3 σκορ.');
+        return;
       }
-    }
 
-    const values = rawValues;
+      if (filledIndices.length === 3) {
+        const missing = rawValues.findIndex(v => v === null);
+        const knownValues = rawValues.filter(v => v !== null);
+
+        if (roundNo % 2 === 1) {
+          const allowed = [32, 16, 8, 4];
+          const missingValue = allowed.find(v => !knownValues.includes(v));
+
+          if (missingValue === undefined) {
+            alert('Στους μονούς γύρους δεν βρέθηκε σωστή 4η τιμή.');
+            return;
+          }
+
+          rawValues[missing] = missingValue;
+          pInputEls[missing].value = missingValue;
+        } else {
+          const knownSum = knownValues.reduce((a, b) => a + b, 0);
+          rawValues[missing] = -32 - knownSum;
+          pInputEls[missing].value = rawValues[missing];
+        }
+      }
+
+      const values = rawValues;
 
       if (roundNo % 2 === 1) {
         const allowed = [32, 16, 8, 4];
         const sortedValues = [...values].sort((a, b) => a - b);
         const sortedAllowed = [...allowed].sort((a, b) => a - b);
+
         if (sortedValues.join(',') !== sortedAllowed.join(',')) {
           alert('Στους μονούς γύρους επιτρέπονται μόνο οι τιμές 32, 16, 8, 4 μία φορά η καθεμία.');
           return;
@@ -1203,9 +1276,11 @@
       }
 
       state.sevenAri.rounds.push(values);
+
       if (state.sevenAri.currentRound % 2 === 0) {
-         state.currentDealer = (state.currentDealer + 1) % 4;
+        state.currentDealer = (state.currentDealer + 1) % 4;
       }
+
       state.sevenAri.currentRound += 1;
       pInputEls.forEach(el => el.value = '');
 
@@ -1219,6 +1294,7 @@
     function checkXeriWinner() {
       const t1 = totalOf(state.team1Rounds);
       const t2 = totalOf(state.team2Rounds);
+
       if (t1 >= state.maxPoints) {
         winnerText.textContent = `Team ${state.team1Name} won`;
         winnerModal.classList.add('show');
@@ -1247,18 +1323,32 @@
       showScreen('dealer');
     });
 
-    document.getElementById('instagramBtn').addEventListener('click', () => {
+    document.getElementById('menuBtn').addEventListener('click', () => {
+      showScreen('drinkMenu');
+    });
+
+    document.getElementById('eventsBtn').addEventListener('click', () => {
       window.open('https://www.instagram.com/kafepoieiokoukla/', '_blank');
     });
 
-    document.getElementById('youtubeBtn').addEventListener('click', () => {
+    document.getElementById('podcastBtn').addEventListener('click', () => {
       window.open('https://www.youtube.com/@AstroKafeneion', '_blank');
     });
 
+    document.getElementById('videogameBtn').addEventListener('click', () => {
+      window.open('https://akonstan.itch.io/lympia-texas-villagers-outlaw', '_blank');
+    });
+
+    document.getElementById('drinkMenuBackBtn').addEventListener('click', () => {
+      showScreen('home');
+    });
+
     document.getElementById('maxBackBtn').addEventListener('click', () => showScreen('home'));
+
     document.getElementById('dealerBackBtn').addEventListener('click', () => {
       showScreen(state.currentGame === 'seven' ? 'home' : 'max');
     });
+
     document.getElementById('dealerContinueBtn').addEventListener('click', () => {
       showScreen(state.currentGame === 'seven' ? 'seven' : 'xeri');
     });
@@ -1294,12 +1384,11 @@
         alert('Δεν υπάρχει προηγούμενος γύρος για διόρθωση.');
         return;
       }
+
       confirmAction('Are you sure?', () => {
         state.team1Rounds.pop();
         state.team2Rounds.pop();
-        if ((state.sevenAri.currentRound - 1) % 2 === 0) {
-           state.currentDealer = (state.currentDealer + 3) % 4;
-        }
+        state.currentDealer = (state.currentDealer + 3) % 4;
         renderAll();
       });
     });
@@ -1312,7 +1401,6 @@
 
       confirmAction('Are you sure?', () => {
         const removedRound = state.sevenAri.currentRound - 1;
-
         state.sevenAri.rounds.pop();
 
         if (removedRound % 2 === 0) {
@@ -1324,6 +1412,7 @@
         renderAll();
       });
     });
+
     team1Name.addEventListener('input', renderAll);
     team2Name.addEventListener('input', renderAll);
     pNameInputs.forEach(input => input.addEventListener('input', renderAll));
@@ -1343,6 +1432,7 @@
       winnerModal.classList.remove('show');
       resetToHome();
     });
+
     window.addEventListener('popstate', (event) => {
       const targetScreen = event.state?.screen || 'home';
       const currentScreen = Object.keys(screens).find(
@@ -1362,6 +1452,7 @@
       Object.values(screens).forEach(s => s.classList.remove('active'));
       screens[targetScreen].classList.add('active');
     });
+
     history.replaceState({ screen: 'home' }, '', '#home');
     state.currentDealer = Math.floor(Math.random() * 4);
     renderAll();
