@@ -705,7 +705,18 @@
       font-size: 1rem;
       font-weight: 700;
     }
+.menu-screen {
+  background: url('menu-bg.png') center/cover no-repeat;
+}
 
+.menu-screen .white-box,
+.menu-screen .top-tag {
+  background: rgba(255,255,255,0.9);
+}
+
+.menu-screen .white-box {
+  margin-top: 40px;
+}
     @media (max-width: 390px) {
       .landing-btn {
         font-size: 1rem;
@@ -739,7 +750,7 @@
       </div>
     </section>
 
-    <section class="screen" id="drinkMenuScreen">
+    <section class="screen menu-screen" id="drinkMenuScreen">
       <div class="back-row">
         <button class="back-btn" id="drinkMenuBackBtn">Πίσω</button>
         <div class="top-tag">MENU</div>
