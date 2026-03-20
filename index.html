@@ -676,21 +676,21 @@
   left: 8%;
   top: 86.5%;
   display: flex;
-  gap: 6%;
-  width: 42%;
+  gap: 4%;
+  width: 62%;
   justify-content: flex-start;
   z-index: 2;
 }
 
-    .landing-fun-btn {
-      width: 42%;
-      aspect-ratio: 1 / 1;
-      border: 2px solid #111;
-      background: rgba(255,255,255,0.75);
-      cursor: pointer;
-      padding: 0;
-      overflow: hidden;
-    }
+.landing-fun-btn {
+  width: 30%;
+  aspect-ratio: 1 / 1;
+  border: 2px solid #111;
+  background: rgba(255,255,255,0.75);
+  cursor: pointer;
+  padding: 0;
+  overflow: hidden;
+}
 
     .landing-fun-btn img {
       width: 100%;
@@ -705,6 +705,64 @@
       font-size: 1rem;
       font-weight: 700;
     }
+.music-screen {
+  padding: 0;
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.music-bg {
+  position: absolute;
+  inset: 0;
+  background: url('music-bg.png') center/cover no-repeat;
+}
+
+.music-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.28);
+}
+
+.music-content {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  padding: 20px 14px 30px;
+}
+
+.music-title {
+  text-align: center;
+  color: white;
+  font-size: 2rem;
+  font-weight: 900;
+  margin: 12px 0 28px;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.8);
+}
+
+.music-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  align-items: center;
+}
+
+.music-item-btn {
+  width: 78%;
+  max-width: 340px;
+  padding: 0;
+  border: 4px solid #111;
+  background: transparent;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.music-item-btn img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
 .menu-screen {
   background: url('menu-bg.png') center/cover no-repeat;
 }
@@ -739,14 +797,17 @@
   <button class="landing-btn btn-menu" id="menuBtn">MENU</button>
   <button class="landing-btn btn-events" id="eventsBtn">EVENTS</button>
 
-        <div class="landing-fun-row">
-          <button class="landing-fun-btn" id="podcastBtn" aria-label="Podcast">
-            <img src="podcast.png" alt="Podcast">
-          </button>
-          <button class="landing-fun-btn" id="videogameBtn" aria-label="Videogame">
-            <img src="videogame.png" alt="Videogame">
-          </button>
-        </div>
+<div class="landing-fun-row">
+  <button class="landing-fun-btn" id="podcastBtn" aria-label="Podcast">
+    <img src="podcast.png" alt="Podcast">
+  </button>
+  <button class="landing-fun-btn" id="videogameBtn" aria-label="Videogame">
+    <img src="videogame.png" alt="Videogame">
+  </button>
+  <button class="landing-fun-btn" id="musicBtn" aria-label="Music">
+    <img src="music.png" alt="Music">
+  </button>
+</div>
       </div>
     </section>
 
@@ -762,7 +823,36 @@
         </div>
       </div>
     </section>
+<section class="screen music-screen" id="musicScreen">
+  <div class="music-bg"></div>
 
+  <div class="music-content">
+    <div class="back-row">
+      <button class="back-btn" id="musicBackBtn">Πίσω</button>
+      <div class="top-tag">MUSIC</div>
+    </div>
+
+    <div class="music-title">LOCAL MUSIC</div>
+
+    <div class="music-list">
+      <button class="music-item-btn" id="stvrsBtn">
+        <img src="stvrs.png" alt="Σταύρος Χριστοδούλου">
+      </button>
+
+      <button class="music-item-btn" id="kaouBtn">
+        <img src="kaou.png" alt="Χρίστος Καουράνης">
+      </button>
+
+      <button class="music-item-btn" id="darkBtn">
+        <img src="dark.png" alt="Dark Poetry">
+      </button>
+
+      <button class="music-item-btn" id="proBtn">
+        <img src="pro.png" alt="Prodigee">
+      </button>
+    </div>
+  </div>
+</section>
     <section class="screen" id="maxScreen">
       <div class="back-row">
         <button class="back-btn" id="maxBackBtn">Πίσω</button>
@@ -968,14 +1058,15 @@
       }
     };
 
-    const screens = {
-      home: document.getElementById('homeScreen'),
-      drinkMenu: document.getElementById('drinkMenuScreen'),
-      max: document.getElementById('maxScreen'),
-      dealer: document.getElementById('dealerScreen'),
-      xeri: document.getElementById('xeriGameScreen'),
-      seven: document.getElementById('sevenGameScreen')
-    };
+const screens = {
+  home: document.getElementById('homeScreen'),
+  drinkMenu: document.getElementById('drinkMenuScreen'),
+  music: document.getElementById('musicScreen'),
+  max: document.getElementById('maxScreen'),
+  dealer: document.getElementById('dealerScreen'),
+  xeri: document.getElementById('xeriGameScreen'),
+  seven: document.getElementById('sevenGameScreen')
+};
 
     const team1Name = document.getElementById('team1Name');
     const team2Name = document.getElementById('team2Name');
@@ -1434,7 +1525,29 @@
       winnerModal.classList.remove('show');
       resetToHome();
     });
+document.getElementById('musicBtn').addEventListener('click', () => {
+  showScreen('music');
+});
 
+document.getElementById('musicBackBtn').addEventListener('click', () => {
+  showScreen('home');
+});
+
+document.getElementById('stvrsBtn').addEventListener('click', () => {
+  window.open('https://www.youtube.com/watch?v=vaFUGVlfmvU&list=RDvaFUGVlfmvU&start_radio=1', '_blank');
+});
+
+document.getElementById('kaouBtn').addEventListener('click', () => {
+  window.open('https://www.youtube.com/watch?v=SCx2Et0IyQM&list=RDSCx2Et0IyQM&start_radio=1', '_blank');
+});
+
+document.getElementById('darkBtn').addEventListener('click', () => {
+  window.open('https://www.youtube.com/watch?v=MtDnLLz5oUk&list=RDEMVp6yC5SIw7HLUi2B5yhdfw&start_radio=1', '_blank');
+});
+
+document.getElementById('proBtn').addEventListener('click', () => {
+  window.open('https://www.youtube.com/watch?v=pHW3yKuozcU', '_blank');
+});
     window.addEventListener('popstate', (event) => {
       const targetScreen = event.state?.screen || 'home';
       const currentScreen = Object.keys(screens).find(
