@@ -27,21 +27,21 @@
       min-height: 100vh;
     }
 
-.app {
-  position: relative;
-  width: 100%;
-  max-width: 430px;
-  min-height: 100vh;
-  overflow: hidden;
-  background: url('game-bg.png') center/cover no-repeat;
-}
+    .app {
+      position: relative;
+      width: 100%;
+      max-width: 430px;
+      min-height: 100vh;
+      overflow: hidden;
+      background: url('game-bg.png') center/cover no-repeat;
+    }
 
-.overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.12);
-  pointer-events: none;
-}
+    .overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.12);
+      pointer-events: none;
+    }
 
     .screen {
       position: relative;
@@ -592,40 +592,40 @@
     .primary { background: var(--brown); color: white; }
     .secondary { background: #e9e3dc; color: var(--text); }
 
-    /* Landing page */
-.landing-screen {
-  padding: 0;
-  background: #111;
-}
+    .landing-screen {
+      padding: 0;
+      background: #111;
+    }
 
-.landing-image-wrap {
-  position: relative;
-  width: 100%;
-  max-width: 430px;
-  min-height: 100vh;
-  margin: 0 auto;
-  background: #000;
-}
+    .landing-image-wrap {
+      position: relative;
+      width: 100%;
+      max-width: 430px;
+      min-height: 100vh;
+      margin: 0 auto;
+      background: #000;
+    }
 
-.landing-image {
-  display: block;
-  width: 100%;
-  min-height: 100vh;
-  object-fit: cover;
-}
-.landing-bottom-title {
-  position: absolute;
-  left: 8%;
-  top: 74.5%;
-  color: white;
-  font-size: 1.75rem;
-  font-weight: 900;
-  line-height: 1.15;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.7);
-  z-index: 2;
-}
-    .landing-btn {
+    .landing-image {
+      display: block;
+      width: 100%;
+      min-height: 100vh;
+      object-fit: cover;
+    }
+
+    .landing-bottom-title {
       position: absolute;
+      left: 8%;
+      top: 74.5%;
+      color: white;
+      font-size: 1.75rem;
+      font-weight: 900;
+      line-height: 1.15;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.7);
+      z-index: 2;
+    }
+
+    .landing-btn {
       border: 2px solid #cfcfcf;
       background: #000;
       color: #fff;
@@ -641,70 +641,94 @@
       filter: brightness(1.08);
     }
 
-    .btn-xeri {
-      left: 31.5%;
-      top: 24.8%;
-      width: 43%;
-      height: 6.3%;
+    .landing-game-grid {
+      position: absolute;
+      top: 24.5%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 64%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px 14px;
+      z-index: 2;
     }
 
-    .btn-seven {
-      left: 31.5%;
-      top: 33.3%;
-      width: 43%;
-      height: 6.3%;
+    .btn-game {
+      position: static;
+      width: 100%;
+      min-height: 56px;
+      border: 2px solid #cfcfcf;
+      background: #000;
+      color: #fff;
+      font-weight: 900;
+      font-size: 1.1rem;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+    }
+
+    .btn-kumkan-center {
+      grid-column: 1 / 3;
+      justify-self: center;
+      width: 52%;
     }
 
     .btn-menu {
+      position: absolute;
       left: 9%;
       top: 53%;
       width: 40%;
       height: 5.8%;
       font-size: 1rem;
+      z-index: 2;
     }
 
     .btn-events {
+      position: absolute;
       left: 9%;
       top: 63.2%;
       width: 40%;
       height: 5.8%;
       font-size: 1rem;
+      z-index: 2;
     }
-.menu-pages {
-  width: 96%;
-  margin: 12px auto 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
 
-.menu-page-img {
-  width: 100%;
-  height: auto;
-  display: block;
-  border: 1px solid var(--line);
-  background: white;
-}
-.landing-fun-row {
-  position: absolute;
-  left: 8%;
-  top: 86.5%;
-  display: flex;
-  gap: 4%;
-  width: 62%;
-  justify-content: flex-start;
-  z-index: 2;
-}
+    .menu-pages {
+      width: 96%;
+      margin: 12px auto 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
 
-.landing-fun-btn {
-  width: 30%;
-  aspect-ratio: 1 / 1;
-  border: 2px solid #111;
-  background: rgba(255,255,255,0.75);
-  cursor: pointer;
-  padding: 0;
-  overflow: hidden;
-}
+    .menu-page-img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border: 1px solid var(--line);
+      background: white;
+    }
+
+    .landing-fun-row {
+      position: absolute;
+      left: 8%;
+      top: 86.5%;
+      display: flex;
+      gap: 4%;
+      width: 62%;
+      justify-content: flex-start;
+      z-index: 2;
+    }
+
+    .landing-fun-btn {
+      width: 30%;
+      aspect-ratio: 1 / 1;
+      border: 2px solid #111;
+      background: rgba(255,255,255,0.75);
+      cursor: pointer;
+      padding: 0;
+      overflow: hidden;
+    }
 
     .landing-fun-btn img {
       width: 100%;
@@ -713,94 +737,220 @@
       object-fit: cover;
     }
 
-    .drink-list {
-      text-align: left;
-      line-height: 1.8;
-      font-size: 1rem;
-      font-weight: 700;
+    .music-screen {
+      padding: 0;
+      min-height: 100vh;
+      position: relative;
+      overflow: hidden;
     }
-.music-screen {
-  padding: 0;
-  min-height: 100vh;
-  position: relative;
-  overflow: hidden;
-}
 
-.music-bg {
-  position: absolute;
-  inset: 0;
-  background: url('music-bg.png') center/cover no-repeat;
-}
+    .music-bg {
+      position: absolute;
+      inset: 0;
+      background: url('music-bg.png') center/cover no-repeat;
+    }
 
-.music-bg::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.28);
-}
+    .music-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.28);
+    }
 
-.music-content {
-  position: relative;
-  z-index: 1;
-  min-height: 100vh;
-  padding: 20px 14px 30px;
-}
+    .music-content {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      padding: 20px 14px 30px;
+    }
 
-.music-title {
-  text-align: center;
-  color: white;
-  font-size: 2rem;
-  font-weight: 900;
-  margin: 12px 0 28px;
-  text-shadow: 0 2px 6px rgba(0,0,0,0.8);
-}
+    .music-title {
+      text-align: center;
+      color: white;
+      font-size: 2rem;
+      font-weight: 900;
+      margin: 12px 0 28px;
+      text-shadow: 0 2px 6px rgba(0,0,0,0.8);
+    }
 
-.music-list {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  align-items: center;
-}
+    .music-list {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      align-items: center;
+    }
 
-.music-item-btn {
-  width: 78%;
-  max-width: 340px;
-  padding: 0;
-  border: 4px solid #111;
-  background: transparent;
-  cursor: pointer;
-  overflow: hidden;
-}
+    .music-item-btn {
+      width: 78%;
+      max-width: 340px;
+      padding: 0;
+      border: 4px solid #111;
+      background: transparent;
+      cursor: pointer;
+      overflow: hidden;
+    }
 
-.music-item-btn img {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-.menu-screen {
-  background: url('menu-bg.png') center/cover no-repeat;
-}
+    .music-item-btn img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
 
-.menu-screen .white-box,
-.menu-screen .top-tag {
-  background: rgba(255,255,255,0.9);
-}
-.landing-credit {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 10px;
-  text-align: center;
-  color: white;
-  font-size: 0.42rem;
-  font-weight: 700;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.7);
-  z-index: 2;
-}
-.menu-screen .white-box {
-  margin-top: 40px;
-}
+    .menu-screen {
+      background: url('menu-bg.png') center/cover no-repeat;
+    }
+
+    .menu-screen .white-box,
+    .menu-screen .top-tag {
+      background: rgba(255,255,255,0.9);
+    }
+
+    .landing-credit {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 10px;
+      text-align: center;
+      color: white;
+      font-size: 0.42rem;
+      font-weight: 700;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.7);
+      z-index: 2;
+    }
+
+    .kumkan-dealer-line,
+    .kumkan-mini-line {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 14px auto;
+    }
+
+    .kumkan-dealer-player,
+    .kumkan-mini-player {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      color: var(--text);
+      font-weight: 800;
+      min-width: 42px;
+    }
+
+    .kumkan-dealer-player.active .player-head,
+    .kumkan-dealer-player.active .player-body,
+    .kumkan-mini-player.active .mini-head,
+    .kumkan-mini-player.active .mini-body {
+      background: var(--green);
+    }
+
+    .kumkan-table {
+      width: 96%;
+      margin: 18px auto 0;
+      border: 1px solid var(--line);
+      display: grid;
+      gap: 0;
+      overflow-x: auto;
+      background: var(--soft);
+    }
+
+    .kumkan-col {
+      min-width: 120px;
+      border-left: 1px solid var(--line);
+      display: grid;
+      grid-template-rows: 52px 70px 1fr 72px 52px;
+    }
+
+    .kumkan-col:first-child {
+      border-left: 0;
+    }
+
+    .kumkan-head,
+    .kumkan-total,
+    .kumkan-rounds,
+    .kumkan-input,
+    .kumkan-revive {
+      padding: 8px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .kumkan-head {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .kumkan-head input {
+      width: 100%;
+      border: 0;
+      background: transparent;
+      text-align: center;
+      font-weight: 900;
+      font-size: 1rem;
+      color: var(--text);
+      outline: none;
+    }
+
+    .kumkan-total {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: var(--text);
+    }
+
+    .kumkan-rounds {
+      min-height: 160px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      overflow: auto;
+    }
+
+    .kumkan-input {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .kumkan-input input {
+      width: 72px;
+      text-align: center;
+      border: 1px solid #aaa;
+      border-radius: 10px;
+      padding: 8px;
+      font-size: 1rem;
+    }
+
+    .kumkan-revive {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .kumkan-revive button {
+      border: 0;
+      border-radius: 10px;
+      padding: 8px 10px;
+      background: var(--brown);
+      color: white;
+      font-weight: 900;
+      cursor: pointer;
+      font-size: 0.85rem;
+    }
+
+    .kumkan-eliminated {
+      background: rgba(255, 0, 0, 0.08);
+    }
+
+    .kumkan-eliminated .kumkan-total {
+      color: var(--red);
+    }
+
     @media (max-width: 390px) {
+      .btn-game,
       .landing-btn {
         font-size: 1rem;
       }
@@ -810,83 +960,133 @@
 <body>
   <div class="app">
     <div class="overlay"></div>
-<div class="landing-credit">© Created by Kostakis v.1</div>
+
     <section class="screen active landing-screen" id="homeScreen">
       <div class="landing-image-wrap">
-          <div class="landing-bottom-title">Περισσότερη<br>διασκέδαση</div>
+        <div class="landing-bottom-title">Περισσότερη<br>διασκέδαση</div>
         <img class="landing-image" src="home-landing.png" alt="Κούκλα καφεποιείο αρχική σελίδα">
 
+        <div class="landing-game-grid">
+          <button class="btn-game" id="xeriBtn">ΞΕΡΗ</button>
+          <button class="btn-game" id="sevenAriBtn">7-ΑΡΙ</button>
+          <button class="btn-game btn-kumkan-center" id="kumkanBtn">ΚΟΥΜ ΚΑΝ</button>
+        </div>
 
-  <button class="landing-btn btn-xeri" id="xeriBtn">ΞΕΡΗ</button>
-  <button class="landing-btn btn-seven" id="sevenAriBtn">7-ΑΡΙ</button>
-  <button class="landing-btn btn-menu" id="menuBtn">MENU</button>
-  <button class="landing-btn btn-events" id="eventsBtn">EVENTS</button>
+        <button class="landing-btn btn-menu" id="menuBtn">MENU</button>
+        <button class="landing-btn btn-events" id="eventsBtn">EVENTS</button>
 
-<div class="landing-fun-row">
-  <button class="landing-fun-btn" id="podcastBtn" aria-label="Podcast">
-    <img src="podcast.png" alt="Podcast">
-  </button>
-  <button class="landing-fun-btn" id="videogameBtn" aria-label="Videogame">
-    <img src="videogame.png" alt="Videogame">
-  </button>
-  <button class="landing-fun-btn" id="musicBtn" aria-label="Music">
-    <img src="music.png" alt="Music">
-  </button>
-</div>
+        <div class="landing-fun-row">
+          <button class="landing-fun-btn" id="podcastBtn" aria-label="Podcast">
+            <img src="podcast.png" alt="Podcast">
+          </button>
+          <button class="landing-fun-btn" id="videogameBtn" aria-label="Videogame">
+            <img src="videogame.png" alt="Videogame">
+          </button>
+          <button class="landing-fun-btn" id="musicBtn" aria-label="Music">
+            <img src="music.png" alt="Music">
+          </button>
+        </div>
+
+        <div class="landing-credit">© Created by Kostakis v.1</div>
       </div>
     </section>
 
-<section class="screen menu-screen" id="drinkMenuScreen">
-  <div class="back-row">
-    <button class="back-btn" id="drinkMenuBackBtn">Πίσω</button>
-    <div class="top-tag">MENU</div>
-  </div>
+    <section class="screen menu-screen" id="drinkMenuScreen">
+      <div class="back-row">
+        <button class="back-btn" id="drinkMenuBackBtn">Πίσω</button>
+        <div class="top-tag">MENU</div>
+      </div>
+      <div class="menu-pages">
+        <img class="menu-page-img" src="menu1.jpg" alt="Menu page 1">
+        <img class="menu-page-img" src="menu2.jpg" alt="Menu page 2">
+        <img class="menu-page-img" src="menu3.jpg" alt="Menu page 3">
+        <img class="menu-page-img" src="menu4.jpg" alt="Menu page 4">
+      </div>
+    </section>
 
-  <div class="menu-pages">
-    <img class="menu-page-img" src="menu1.jpg" alt="Menu page 1">
-    <img class="menu-page-img" src="menu2.jpg" alt="Menu page 2">
-    <img class="menu-page-img" src="menu3.jpg" alt="Menu page 3">
-    <img class="menu-page-img" src="menu4.jpg" alt="Menu page 4">
-  </div>
-</section>
-<section class="screen music-screen" id="musicScreen">
-  <div class="music-bg"></div>
+    <section class="screen music-screen" id="musicScreen">
+      <div class="music-bg"></div>
+      <div class="music-content">
+        <div class="back-row">
+          <button class="back-btn" id="musicBackBtn">Πίσω</button>
+          <div class="top-tag">MUSIC</div>
+        </div>
+        <div class="music-title">LOCAL MUSIC</div>
+        <div class="music-list">
+          <button class="music-item-btn" id="stvrsBtn"><img src="stvrs.png" alt="Σταύρος Χριστοδούλου"></button>
+          <button class="music-item-btn" id="kaouBtn"><img src="kaou.png" alt="Χρίστος Καουράνης"></button>
+          <button class="music-item-btn" id="darkBtn"><img src="dark.png" alt="Dark Poetry"></button>
+          <button class="music-item-btn" id="proBtn"><img src="pro.png" alt="Prodigee"></button>
+        </div>
+      </div>
+    </section>
 
-  <div class="music-content">
-    <div class="back-row">
-      <button class="back-btn" id="musicBackBtn">Πίσω</button>
-      <div class="top-tag">MUSIC</div>
-    </div>
+    <section class="screen" id="kumkanPlayersScreen">
+      <div class="back-row">
+        <button class="back-btn" id="kumkanPlayersBackBtn">Πίσω</button>
+        <div class="top-tag">ΚΟΥΜ ΚΑΝ</div>
+      </div>
+      <div class="white-box">ΕΠΕΛΕΞΕ ΑΡΙΘΜΟ ΠΑΙΚΤΩΝ</div>
+      <div class="points-list">
+        <button class="pill kumkan-player-btn" data-count="2">2</button>
+        <button class="pill kumkan-player-btn" data-count="3">3</button>
+        <button class="pill kumkan-player-btn" data-count="4">4</button>
+        <button class="pill kumkan-player-btn" data-count="5">5</button>
+        <button class="pill kumkan-player-btn" data-count="6">6</button>
+        <button class="pill kumkan-player-btn" data-count="7">7</button>
+      </div>
+    </section>
 
-    <div class="music-title">LOCAL MUSIC</div>
+    <section class="screen" id="kumkanMaxScreen">
+      <div class="back-row">
+        <button class="back-btn" id="kumkanMaxBackBtn">Πίσω</button>
+        <div class="top-tag">ΚΟΥΜ ΚΑΝ</div>
+      </div>
+      <div class="white-box">ΕΠΕΛΕΞΕ ΑΡΙΘΜΟ<br>ΠΟΝΤΩΝ</div>
+      <div class="points-list">
+        <button class="pill kumkan-max-btn" data-max="50">50</button>
+        <button class="pill kumkan-max-btn" data-max="100">100</button>
+        <button class="pill kumkan-max-btn" data-max="150">150</button>
+        <button class="pill kumkan-max-btn" data-max="200">200</button>
+        <button class="pill kumkan-max-btn" data-max="250">250</button>
+      </div>
+    </section>
 
-    <div class="music-list">
-      <button class="music-item-btn" id="stvrsBtn">
-        <img src="stvrs.png" alt="Σταύρος Χριστοδούλου">
-      </button>
+    <section class="screen" id="kumkanDealerScreen">
+      <div class="back-row">
+        <button class="back-btn" id="kumkanDealerBackBtn">Πίσω</button>
+        <div class="top-tag" id="kumkanDealerTopTag">ΚΟΥΜ ΚΑΝ</div>
+      </div>
+      <div class="dealer-card">
+        <div class="dealer-title">ΜΟΙΡΑΖΕΙ Ο</div>
+        <div class="dealer-name" id="kumkanDealerName">ΠΑΙΚΤΗΣ 1</div>
+        <div class="kumkan-dealer-line" id="kumkanDealerLine"></div>
+        <button class="dealer-btn" id="kumkanDealerContinueBtn">ΣΥΝΕΧΕΙΑ</button>
+      </div>
+    </section>
 
-      <button class="music-item-btn" id="kaouBtn">
-        <img src="kaou.png" alt="Χρίστος Καουράνης">
-      </button>
+    <section class="screen" id="kumkanGameScreen">
+      <div class="back-row">
+        <button class="back-btn" id="kumkanGameBackBtn">Πίσω</button>
+        <div class="top-tag" id="kumkanGameTopTag">ΚΟΥΜ ΚΑΝ</div>
+      </div>
+      <div class="kumkan-table" id="kumkanTable"></div>
+      <div class="action-row">
+        <button class="action-btn action-update" id="kumkanUpdateBtn">ΕΝΗΜΕΡΩΣΗ</button>
+        <button class="action-btn action-correct" id="kumkanCorrectBtn">ΔΙΟΡΘΩΣΗ</button>
+      </div>
+      <div class="dealer-mini">
+        <div class="dealer-mini-title">Μοιράζει</div>
+        <div class="kumkan-mini-line" id="kumkanMiniLine"></div>
+      </div>
+    </section>
 
-      <button class="music-item-btn" id="darkBtn">
-        <img src="dark.png" alt="Dark Poetry">
-      </button>
-
-      <button class="music-item-btn" id="proBtn">
-        <img src="pro.png" alt="Prodigee">
-      </button>
-    </div>
-  </div>
-</section>
     <section class="screen" id="maxScreen">
       <div class="back-row">
         <button class="back-btn" id="maxBackBtn">Πίσω</button>
         <div class="top-tag">ΞΕΡΗ</div>
       </div>
-
       <div class="white-box">ΕΠΕΛΕΞΕ ΑΡΙΘΜΟ<br>ΠΟΝΤΩΝ</div>
-
       <div class="points-list">
         <button class="pill point-btn" data-max="50">50</button>
         <button class="pill point-btn" data-max="100">100</button>
@@ -901,13 +1101,11 @@
         <button class="back-btn" id="dealerBackBtn">Πίσω</button>
         <div class="top-tag" id="dealerTopTag">ΞΕΡΗ 50</div>
       </div>
-
       <div class="dealer-card">
         <div class="dealer-title">ΜΟΙΡΑΖΕΙ Ο</div>
         <div class="dealer-name" id="dealerName">ΠΑΙΚΤΗΣ 1</div>
         <div class="dealer-layout" id="dealerLayoutLarge">
           <div class="table-center"></div>
-
           <div class="player-dot player-top" data-pos="2">
             <div class="player-head"></div>
             <div class="player-body"></div>
@@ -938,7 +1136,6 @@
         <button class="back-btn" id="gameBackBtn">Πίσω</button>
         <div class="top-tag" id="gameTopTag">ΞΕΡΗ 50</div>
       </div>
-
       <div class="table-wrap two-col">
         <div class="team-col">
           <div class="team-head"><input class="team-name" id="team1Name" value="ΟΜΑΔΑ 1"></div>
@@ -950,7 +1147,6 @@
             <input class="score-input" id="team1Input" type="number" min="0" step="5" placeholder="-">
           </div>
         </div>
-
         <div class="team-col">
           <div class="team-head"><input class="team-name" id="team2Name" value="ΟΜΑΔΑ 2"></div>
           <div class="team-score-area">
@@ -962,12 +1158,10 @@
           </div>
         </div>
       </div>
-
       <div class="action-row">
         <button class="action-btn action-update" id="updateRoundBtn">ΕΝΗΜΕΡΩΣΗ</button>
         <button class="action-btn action-correct" id="correctRoundBtn">ΔΙΟΡΘΩΣΗ</button>
       </div>
-
       <div class="dealer-mini">
         <div class="dealer-mini-title">Μοιράζει</div>
         <div class="dealer-mini-row" id="dealerMiniRowXeri">
@@ -984,9 +1178,7 @@
         <button class="back-btn" id="sevenBackBtn">Πίσω</button>
         <div class="top-tag">7-ΑΡΙ</div>
       </div>
-
       <div class="round-badge odd-round" id="sevenRoundBadge">Γύρος 1 / 10 — Μονός γύρος</div>
-
       <div class="table-wrap four-col odd-round" id="sevenTableWrap">
         <div class="player-col">
           <div class="player-head-row"><input class="player-name" id="p1Name" value="Π1"></div>
@@ -1021,12 +1213,10 @@
           <div class="player-input-row"><input class="score-input small" id="p4Input" type="text" inputmode="tel" placeholder="-"></div>
         </div>
       </div>
-
       <div class="action-row">
         <button class="action-btn action-update" id="sevenUpdateBtn">ΕΝΗΜΕΡΩΣΗ</button>
         <button class="action-btn action-correct" id="sevenCorrectBtn">ΔΙΟΡΘΩΣΗ</button>
       </div>
-
       <div class="dealer-mini">
         <div class="dealer-mini-title">Μοιράζει</div>
         <div class="dealer-mini-row" id="dealerMiniRowSeven">
@@ -1036,7 +1226,6 @@
           <div class="mini-player" data-pos="3"><div class="mini-head"></div><div class="mini-body"></div><div>Π4</div></div>
         </div>
       </div>
-
       <div class="ranking-box" id="rankingBox">
         <h3>Τελική κατάταξη</h3>
         <ol class="ranking-list" id="rankingList"></ol>
@@ -1081,18 +1270,31 @@
         rounds: [],
         currentRound: 1,
         rankingReady: false
+      },
+      kumkan: {
+        playerCount: 2,
+        maxPoints: 100,
+        names: [],
+        totals: [],
+        rounds: [],
+        eliminated: [],
+        currentDealer: 0
       }
     };
 
-const screens = {
-  home: document.getElementById('homeScreen'),
-  drinkMenu: document.getElementById('drinkMenuScreen'),
-  music: document.getElementById('musicScreen'),
-  max: document.getElementById('maxScreen'),
-  dealer: document.getElementById('dealerScreen'),
-  xeri: document.getElementById('xeriGameScreen'),
-  seven: document.getElementById('sevenGameScreen')
-};
+    const screens = {
+      home: document.getElementById('homeScreen'),
+      drinkMenu: document.getElementById('drinkMenuScreen'),
+      music: document.getElementById('musicScreen'),
+      kumkanPlayers: document.getElementById('kumkanPlayersScreen'),
+      kumkanMax: document.getElementById('kumkanMaxScreen'),
+      kumkanDealer: document.getElementById('kumkanDealerScreen'),
+      kumkanGame: document.getElementById('kumkanGameScreen'),
+      max: document.getElementById('maxScreen'),
+      dealer: document.getElementById('dealerScreen'),
+      xeri: document.getElementById('xeriGameScreen'),
+      seven: document.getElementById('sevenGameScreen')
+    };
 
     const team1Name = document.getElementById('team1Name');
     const team2Name = document.getElementById('team2Name');
@@ -1144,10 +1346,7 @@ const screens = {
     function showScreen(name, addToHistory = true) {
       Object.values(screens).forEach(s => s.classList.remove('active'));
       screens[name].classList.add('active');
-
-      if (addToHistory) {
-        history.pushState({ screen: name }, '', `#${name}`);
-      }
+      if (addToHistory) history.pushState({ screen: name }, '', `#${name}`);
     }
 
     function totalOf(rounds) {
@@ -1252,10 +1451,108 @@ const screens = {
       });
     }
 
+    function initKumkanGame() {
+      const count = state.kumkan.playerCount;
+      state.kumkan.names = Array.from({ length: count }, (_, i) => `Π${i + 1}`);
+      state.kumkan.totals = Array.from({ length: count }, () => 0);
+      state.kumkan.rounds = [];
+      state.kumkan.eliminated = Array.from({ length: count }, () => false);
+      state.kumkan.currentDealer = Math.floor(Math.random() * count);
+    }
+
+    function resetKumkanGame() {
+      state.kumkan.playerCount = 2;
+      state.kumkan.maxPoints = 100;
+      state.kumkan.names = [];
+      state.kumkan.totals = [];
+      state.kumkan.rounds = [];
+      state.kumkan.eliminated = [];
+      state.kumkan.currentDealer = 0;
+    }
+
+    function reviveKumkanPlayer(index) {
+      const activeScores = state.kumkan.totals.filter((score, i) => !state.kumkan.eliminated[i] && i !== index);
+      const reviveScore = activeScores.length ? Math.max(...activeScores) : 0;
+      state.kumkan.totals[index] = reviveScore;
+      state.kumkan.eliminated[index] = false;
+      renderKumkan();
+    }
+
+    function renderKumkan() {
+      const table = document.getElementById('kumkanTable');
+      const dealerLine = document.getElementById('kumkanDealerLine');
+      const miniLine = document.getElementById('kumkanMiniLine');
+      const topTag = document.getElementById('kumkanGameTopTag');
+      const kkDealerTopTag = document.getElementById('kumkanDealerTopTag');
+      const kkDealerName = document.getElementById('kumkanDealerName');
+
+      topTag.textContent = `ΚΟΥΜ ΚΑΝ ${state.kumkan.maxPoints}`;
+      kkDealerTopTag.textContent = `ΚΟΥΜ ΚΑΝ ${state.kumkan.maxPoints}`;
+      kkDealerName.textContent = `ΠΑΙΚΤΗΣ ${state.kumkan.currentDealer + 1}`;
+
+      dealerLine.innerHTML = '';
+      miniLine.innerHTML = '';
+      table.innerHTML = '';
+      table.style.gridTemplateColumns = `repeat(${state.kumkan.playerCount}, minmax(120px, 1fr))`;
+
+      state.kumkan.names.forEach((name, i) => {
+        const dealerItem = document.createElement('div');
+        dealerItem.className = `kumkan-dealer-player ${i === state.kumkan.currentDealer ? 'active' : ''}`;
+        dealerItem.innerHTML = `
+          <div class="player-head"></div>
+          <div class="${i === 0 ? 'player-phone' : 'player-body'}"></div>
+          <div>${name}</div>
+        `;
+        dealerLine.appendChild(dealerItem);
+
+        const miniItem = document.createElement('div');
+        miniItem.className = `kumkan-mini-player ${i === state.kumkan.currentDealer ? 'active' : ''}`;
+        miniItem.innerHTML = `
+          <div class="mini-head"></div>
+          <div class="${i === 0 ? 'mini-phone' : 'mini-body'}"></div>
+          <div>${name}</div>
+        `;
+        miniLine.appendChild(miniItem);
+
+        const roundsHtml = state.kumkan.rounds.length
+          ? state.kumkan.rounds.map((round, idx) => `<div class="round-item"><span>R${idx + 1}</span><span>${round[i] ?? '-'}</span></div>`).join('')
+          : `<div class="round-item"><span>—</span><span>κανένας γύρος</span></div>`;
+
+        const col = document.createElement('div');
+        col.className = `kumkan-col ${state.kumkan.eliminated[i] ? 'kumkan-eliminated' : ''}`;
+        col.innerHTML = `
+          <div class="kumkan-head">
+            <input value="${name}" data-kumkan-name="${i}">
+          </div>
+          <div class="kumkan-total">${state.kumkan.totals[i]}</div>
+          <div class="kumkan-rounds">${roundsHtml}</div>
+          <div class="kumkan-input">
+            <input type="number" placeholder="-" data-kumkan-input="${i}" ${state.kumkan.eliminated[i] ? 'disabled' : ''}>
+          </div>
+          <div class="kumkan-revive">
+            ${state.kumkan.eliminated[i] ? `<button data-kumkan-revive="${i}">Εγγραφή</button>` : ''}
+          </div>
+        `;
+        table.appendChild(col);
+      });
+
+      table.querySelectorAll('[data-kumkan-name]').forEach(input => {
+        input.addEventListener('input', e => {
+          const idx = Number(e.target.dataset.kumkanName);
+          state.kumkan.names[idx] = e.target.value.trim() || `Π${idx + 1}`;
+        });
+      });
+
+      table.querySelectorAll('[data-kumkan-revive]').forEach(btn => {
+        btn.addEventListener('click', () => reviveKumkanPlayer(Number(btn.dataset.kumkanRevive)));
+      });
+    }
+
     function renderAll() {
       renderDealer();
       renderXeri();
       renderSeven();
+      renderKumkan();
     }
 
     function resetXeriGame() {
@@ -1281,6 +1578,7 @@ const screens = {
     function resetToHome() {
       resetXeriGame();
       resetSevenGame();
+      resetKumkanGame();
       state.currentDealer = Math.floor(Math.random() * 4);
       renderAll();
       showScreen('home');
@@ -1410,6 +1708,64 @@ const screens = {
       renderAll();
     }
 
+    function updateKumkanRound() {
+      const nameInputs = Array.from(document.querySelectorAll('[data-kumkan-name]'));
+      nameInputs.forEach((input, i) => {
+        state.kumkan.names[i] = input.value.trim() || `Π${i + 1}`;
+      });
+
+      const inputs = Array.from(document.querySelectorAll('[data-kumkan-input]'));
+      const values = inputs.map((input, i) => {
+        if (state.kumkan.eliminated[i]) return null;
+        if (input.value === '') return null;
+        const v = Number(input.value);
+        return Number.isNaN(v) ? NaN : v;
+      });
+
+      if (values.some(v => Number.isNaN(v))) {
+        alert('Βάλε σωστούς πόντους.');
+        return;
+      }
+
+      const roundValues = values.map(v => v ?? null);
+
+      if (roundValues.every(v => v === null)) {
+        alert('Βάλε τουλάχιστον ένα σκορ.');
+        return;
+      }
+
+      roundValues.forEach((v, i) => {
+        if (v !== null && !state.kumkan.eliminated[i]) {
+          state.kumkan.totals[i] += v;
+          if (state.kumkan.totals[i] > state.kumkan.maxPoints) {
+            state.kumkan.eliminated[i] = true;
+          }
+        }
+      });
+
+      state.kumkan.rounds.push(roundValues);
+      state.kumkan.currentDealer = (state.kumkan.currentDealer + 1) % state.kumkan.playerCount;
+      renderKumkan();
+    }
+
+    function correctKumkanRound() {
+      if (!state.kumkan.rounds.length) {
+        alert('Δεν υπάρχει προηγούμενος γύρος για διόρθωση.');
+        return;
+      }
+
+      confirmAction('Are you sure?', () => {
+        const lastRound = state.kumkan.rounds.pop();
+        lastRound.forEach((v, i) => {
+          if (v !== null) state.kumkan.totals[i] -= v;
+        });
+
+        state.kumkan.eliminated = state.kumkan.totals.map(total => total > state.kumkan.maxPoints);
+        state.kumkan.currentDealer = (state.kumkan.currentDealer - 1 + state.kumkan.playerCount) % state.kumkan.playerCount;
+        renderKumkan();
+      });
+    }
+
     function checkXeriWinner() {
       const t1 = totalOf(state.team1Rounds);
       const t2 = totalOf(state.team2Rounds);
@@ -1442,6 +1798,11 @@ const screens = {
       showScreen('dealer');
     });
 
+    document.getElementById('kumkanBtn').addEventListener('click', () => {
+      state.currentGame = 'kumkan';
+      showScreen('kumkanPlayers');
+    });
+
     document.getElementById('menuBtn').addEventListener('click', () => {
       showScreen('drinkMenu');
     });
@@ -1458,9 +1819,74 @@ const screens = {
       window.open('https://akonstan.itch.io/lympia-texas-villagers-outlaw', '_blank');
     });
 
+    document.getElementById('musicBtn').addEventListener('click', () => {
+      showScreen('music');
+    });
+
     document.getElementById('drinkMenuBackBtn').addEventListener('click', () => {
       showScreen('home');
     });
+
+    document.getElementById('musicBackBtn').addEventListener('click', () => {
+      showScreen('home');
+    });
+
+    document.getElementById('stvrsBtn').addEventListener('click', () => {
+      window.open('https://www.youtube.com/watch?v=vaFUGVlfmvU&list=RDvaFUGVlfmvU&start_radio=1', '_blank');
+    });
+
+    document.getElementById('kaouBtn').addEventListener('click', () => {
+      window.open('https://www.youtube.com/watch?v=SCx2Et0IyQM&list=RDSCx2Et0IyQM&start_radio=1', '_blank');
+    });
+
+    document.getElementById('darkBtn').addEventListener('click', () => {
+      window.open('https://www.youtube.com/watch?v=MtDnLLz5oUk&list=RDEMVp6yC5SIw7HLUi2B5yhdfw&start_radio=1', '_blank');
+    });
+
+    document.getElementById('proBtn').addEventListener('click', () => {
+      window.open('https://www.youtube.com/watch?v=pHW3yKuozcU', '_blank');
+    });
+
+    document.getElementById('kumkanPlayersBackBtn').addEventListener('click', () => {
+      showScreen('home');
+    });
+
+    document.getElementById('kumkanMaxBackBtn').addEventListener('click', () => {
+      showScreen('kumkanPlayers');
+    });
+
+    document.getElementById('kumkanDealerBackBtn').addEventListener('click', () => {
+      showScreen('kumkanMax');
+    });
+
+    document.getElementById('kumkanGameBackBtn').addEventListener('click', () => {
+      confirmAction('Are you sure?', () => {
+        resetToHome();
+      });
+    });
+
+    document.querySelectorAll('.kumkan-player-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        state.kumkan.playerCount = Number(btn.dataset.count);
+        showScreen('kumkanMax');
+      });
+    });
+
+    document.querySelectorAll('.kumkan-max-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        state.kumkan.maxPoints = Number(btn.dataset.max);
+        initKumkanGame();
+        renderKumkan();
+        showScreen('kumkanDealer');
+      });
+    });
+
+    document.getElementById('kumkanDealerContinueBtn').addEventListener('click', () => {
+      showScreen('kumkanGame');
+    });
+
+    document.getElementById('kumkanUpdateBtn').addEventListener('click', updateKumkanRound);
+    document.getElementById('kumkanCorrectBtn').addEventListener('click', correctKumkanRound);
 
     document.getElementById('maxBackBtn').addEventListener('click', () => showScreen('home'));
 
@@ -1541,46 +1967,24 @@ const screens = {
       state.pendingAction = null;
     });
 
-document.getElementById('okConfirm').addEventListener('click', () => {
-  confirmModal.classList.remove('show');
-  state.pendingAction = null;
-  showScreen('home');
-});
+    document.getElementById('okConfirm').addEventListener('click', () => {
+      confirmModal.classList.remove('show');
+      if (state.pendingAction) state.pendingAction();
+      state.pendingAction = null;
+    });
 
     document.getElementById('winnerOk').addEventListener('click', () => {
       winnerModal.classList.remove('show');
       resetToHome();
     });
-document.getElementById('musicBtn').addEventListener('click', () => {
-  showScreen('music');
-});
 
-document.getElementById('musicBackBtn').addEventListener('click', () => {
-  showScreen('home');
-});
-
-document.getElementById('stvrsBtn').addEventListener('click', () => {
-  window.open('https://www.youtube.com/watch?v=vaFUGVlfmvU&list=RDvaFUGVlfmvU&start_radio=1', '_blank');
-});
-
-document.getElementById('kaouBtn').addEventListener('click', () => {
-  window.open('https://www.youtube.com/watch?v=SCx2Et0IyQM&list=RDSCx2Et0IyQM&start_radio=1', '_blank');
-});
-
-document.getElementById('darkBtn').addEventListener('click', () => {
-  window.open('https://www.youtube.com/watch?v=MtDnLLz5oUk&list=RDEMVp6yC5SIw7HLUi2B5yhdfw&start_radio=1', '_blank');
-});
-
-document.getElementById('proBtn').addEventListener('click', () => {
-  window.open('https://www.youtube.com/watch?v=pHW3yKuozcU', '_blank');
-});
     window.addEventListener('popstate', (event) => {
       const targetScreen = event.state?.screen || 'home';
       const currentScreen = Object.keys(screens).find(
         key => screens[key].classList.contains('active')
       );
 
-      if (currentScreen === 'xeri' || currentScreen === 'seven') {
+      if (currentScreen === 'xeri' || currentScreen === 'seven' || currentScreen === 'kumkanGame') {
         confirmAction('Are you sure?', () => {
           Object.values(screens).forEach(s => s.classList.remove('active'));
           screens[targetScreen].classList.add('active');
