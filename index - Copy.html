@@ -1,0 +1,1602 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Καφεποιείο Score App</title>
+  <style>
+    :root {
+      --brown: #6b4319;
+      --text: #4d3624;
+      --line: #8b8b8b;
+      --accent: #7b2cff;
+      --green: #10c060;
+      --red: #c53030;
+      --soft: rgba(255,255,255,0.96);
+      --even-bg: rgba(210,210,210,0.96);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #d7d1ca;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+.app {
+  position: relative;
+  width: 100%;
+  max-width: 430px;
+  min-height: 100vh;
+  overflow: hidden;
+  background: url('game-bg.png') center/cover no-repeat;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.12);
+  pointer-events: none;
+}
+
+    .screen {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      padding: 20px 14px;
+      display: none;
+    }
+
+    .screen.active { display: block; }
+
+    .white-box,
+    .table-wrap,
+    .top-tag,
+    .dialog,
+    .action-row,
+    .dealer-card,
+    .dealer-mini,
+    .ranking-box,
+    .round-badge {
+      background: var(--soft);
+    }
+
+    .back-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .back-btn {
+      background: #000;
+      color: white;
+      border: 0;
+      padding: 8px 10px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      clip-path: polygon(22% 0, 100% 0, 100% 100%, 22% 100%, 22% 70%, 0 50%, 22% 30%);
+      min-width: 64px;
+    }
+
+    .top-tag {
+      padding: 10px 16px;
+      font-weight: 900;
+      color: var(--text);
+      min-width: 150px;
+      text-align: center;
+      font-size: 1rem;
+    }
+
+    .white-box {
+      margin: 28px auto 18px;
+      width: 88%;
+      padding: 18px 14px;
+      text-align: center;
+      color: var(--text);
+      font-weight: 900;
+      font-size: 1.15rem;
+      line-height: 1.3;
+    }
+
+    .points-list {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      margin-top: 18px;
+      align-items: center;
+    }
+
+    .pill {
+      border: 1.5px solid #3f2e23;
+      border-radius: 16px;
+      width: 78%;
+      min-height: 50px;
+      font-size: 1.15rem;
+      font-weight: 900;
+      color: var(--text);
+      background: var(--soft);
+      cursor: pointer;
+    }
+
+    .dealer-card {
+      width: 96%;
+      margin: 14px auto 0;
+      padding: 12px 12px 18px;
+      border: 1px solid var(--line);
+      text-align: center;
+      color: var(--text);
+    }
+
+    .dealer-title {
+      font-size: 0.95rem;
+      font-weight: 900;
+      margin-bottom: 4px;
+    }
+
+    .dealer-name {
+      font-size: 1.15rem;
+      font-weight: 900;
+      margin-bottom: 10px;
+    }
+
+    .dealer-layout {
+      position: relative;
+      width: 220px;
+      height: 250px;
+      margin: 0 auto 12px;
+    }
+
+    .player-dot {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      color: var(--text);
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .player-head {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #111;
+    }
+
+    .player-body {
+      width: 34px;
+      height: 42px;
+      background: #111;
+    }
+
+    .player-dot.active .player-head,
+    .player-dot.active .player-body {
+      background: var(--green);
+    }
+
+    .player-top { left: 92px; top: 0; }
+    .player-left { left: 0; top: 106px; }
+    .player-right { right: 0; top: 106px; }
+    .player-bottom { left: 92px; bottom: 0; }
+
+    .table-center {
+      position: absolute;
+      left: 60px;
+      top: 88px;
+      width: 100px;
+      height: 100px;
+      background: #111;
+    }
+
+    .player-phone {
+      width: 26px;
+      height: 42px;
+      border: 2px solid #444;
+      border-radius: 8px;
+      background: white;
+      position: relative;
+    }
+
+    .player-phone::before {
+      content: '';
+      position: absolute;
+      left: 10px;
+      bottom: 3px;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #555;
+    }
+
+    .player-phone::after {
+      content: '';
+      position: absolute;
+      left: 6px;
+      top: 8px;
+      width: 11px;
+      height: 18px;
+      border-left: 2px solid #555;
+      transform: skew(-20deg);
+    }
+
+    .dealer-btn {
+      border: 0;
+      border-radius: 14px;
+      padding: 12px 16px;
+      font-size: 1rem;
+      font-weight: 900;
+      background: var(--green);
+      color: white;
+      cursor: pointer;
+      min-width: 160px;
+    }
+
+    .table-wrap.two-col {
+      width: 96%;
+      margin: 18px auto 0;
+      border: 1px solid var(--line);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 430px;
+    }
+
+    .table-wrap.four-col {
+      width: 96%;
+      margin: 18px auto 0;
+      border: 1px solid var(--line);
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      min-height: 430px;
+      transition: background-color 0.2s ease;
+    }
+
+    .table-wrap.four-col.even-round {
+      background: var(--even-bg);
+    }
+
+    .table-wrap.four-col.odd-round {
+      background: var(--soft);
+    }
+
+    .team-col {
+      display: grid;
+      grid-template-rows: 62px 1fr 66px;
+      min-width: 0;
+    }
+
+    .player-col {
+      display: grid;
+      grid-template-rows: 42px 1fr 44px;
+      min-width: 0;
+      background: transparent;
+    }
+
+    .team-col + .team-col,
+    .player-col + .player-col {
+      border-left: 2px solid var(--line);
+    }
+
+    .team-col + .team-col {
+      border-left: 3px solid var(--accent);
+    }
+
+    .team-head,
+    .team-score-area,
+    .team-input-row,
+    .player-head-row,
+    .player-score-area,
+    .player-input-row {
+      border-bottom: 1px solid var(--line);
+    }
+
+    .team-head,
+    .player-head-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px;
+    }
+
+    .team-name,
+    .player-name {
+      width: 100%;
+      border: 0;
+      background: transparent;
+      text-align: center;
+      font-size: 1.05rem;
+      font-weight: 900;
+      color: var(--text);
+      outline: none;
+      text-transform: uppercase;
+    }
+
+    .team-score-area,
+    .player-score-area {
+      padding: 10px 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      overflow: auto;
+      background: transparent;
+    }
+
+    .total {
+      text-align: center;
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--text);
+      border-bottom: 1px dashed #bbb;
+      padding-bottom: 8px;
+    }
+
+    .small-total {
+      text-align: center;
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: var(--text);
+      border-bottom: 1px dashed #bbb;
+      padding-bottom: 6px;
+    }
+
+    .rounds {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 1rem;
+      color: var(--text);
+      min-height: 120px;
+    }
+
+    .round-item {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px dotted #ccc;
+      padding-bottom: 4px;
+    }
+
+    .team-input-row,
+    .player-input-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px;
+      background: transparent;
+    }
+
+    .score-input {
+      width: 84px;
+      text-align: center;
+      border: 1px solid #aaa;
+      border-radius: 10px;
+      padding: 8px;
+      font-size: 1.2rem;
+      color: var(--text);
+    }
+
+    .score-input.small {
+      width: 58px;
+      font-size: 1rem;
+      padding: 6px 4px;
+    }
+
+    .action-row {
+      width: 96%;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-left: 1px solid var(--line);
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .action-btn {
+      border: 0;
+      min-height: 56px;
+      font-size: 1.05rem;
+      font-weight: 900;
+      color: white;
+      cursor: pointer;
+    }
+
+    .action-update {
+      background: var(--green);
+      border-right: 2px solid rgba(255,255,255,0.3);
+    }
+
+    .action-correct {
+      background: var(--red);
+    }
+
+    .dealer-mini {
+      width: 96%;
+      margin: 10px auto 0;
+      border: 1px solid var(--line);
+      padding: 8px;
+      color: var(--text);
+    }
+
+    .dealer-mini-title {
+      text-align: center;
+      font-size: 0.82rem;
+      font-weight: 900;
+      margin-bottom: 6px;
+    }
+
+    .dealer-mini-row {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      align-items: end;
+    }
+
+    .mini-player {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      min-width: 44px;
+    }
+
+    .mini-head {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #111;
+    }
+
+    .mini-body {
+      width: 18px;
+      height: 20px;
+      background: #111;
+    }
+
+    .mini-phone {
+      width: 16px;
+      height: 26px;
+      border: 2px solid #444;
+      border-radius: 5px;
+      background: white;
+      position: relative;
+    }
+
+    .mini-phone::before {
+      content: '';
+      position: absolute;
+      left: 5px;
+      bottom: 1px;
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: #555;
+    }
+
+    .mini-phone::after {
+      content: '';
+      position: absolute;
+      left: 4px;
+      top: 5px;
+      width: 6px;
+      height: 10px;
+      border-left: 2px solid #555;
+      transform: skew(-20deg);
+    }
+
+    .mini-player.active .mini-head,
+    .mini-player.active .mini-body {
+      background: var(--green);
+    }
+
+    .round-badge {
+      width: 96%;
+      margin: 10px auto 0;
+      border: 1px solid var(--line);
+      padding: 10px;
+      text-align: center;
+      font-weight: 900;
+      color: var(--text);
+    }
+
+    .round-badge.even-round {
+      background: var(--even-bg);
+    }
+
+    .round-badge.odd-round {
+      background: var(--soft);
+    }
+
+    .ranking-box {
+      width: 96%;
+      margin: 14px auto 0;
+      border: 1px solid var(--line);
+      padding: 14px;
+      color: var(--text);
+      display: none;
+    }
+
+    .ranking-box.show { display: block; }
+
+    .ranking-box h3 {
+      margin: 0 0 10px;
+      text-align: center;
+    }
+
+    .ranking-list {
+      margin: 0;
+      padding-left: 22px;
+      line-height: 1.7;
+      font-weight: 700;
+    }
+
+    .ranking-note {
+      margin-top: 12px;
+      font-weight: 900;
+      text-align: center;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+      padding: 20px;
+    }
+
+    .modal.show { display: flex; }
+
+    .dialog {
+      width: min(340px, 100%);
+      border-radius: 16px;
+      padding: 18px;
+      text-align: center;
+      color: var(--text);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+    }
+
+    .dialog h3 {
+      margin: 0 0 8px;
+      font-size: 1.2rem;
+    }
+
+    .dialog p {
+      margin: 0 0 16px;
+      font-size: 0.96rem;
+      line-height: 1.4;
+    }
+
+    .dialog-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .dialog-actions button {
+      border: 0;
+      border-radius: 12px;
+      padding: 10px 14px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .primary { background: var(--brown); color: white; }
+    .secondary { background: #e9e3dc; color: var(--text); }
+
+    /* Landing page */
+.landing-screen {
+  padding: 0;
+  background: #111;
+}
+
+.landing-image-wrap {
+  position: relative;
+  width: 100%;
+  max-width: 430px;
+  min-height: 100vh;
+  margin: 0 auto;
+  background: #000;
+}
+
+.landing-image {
+  display: block;
+  width: 100%;
+  min-height: 100vh;
+  object-fit: cover;
+}
+.landing-bottom-title {
+  position: absolute;
+  left: 8%;
+  top: 74.5%;
+  color: white;
+  font-size: 1.75rem;
+  font-weight: 900;
+  line-height: 1.15;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.7);
+  z-index: 2;
+}
+    .landing-btn {
+      position: absolute;
+      border: 2px solid #cfcfcf;
+      background: #000;
+      color: #fff;
+      font-weight: 900;
+      font-size: 1.1rem;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+    }
+
+    .landing-btn:hover,
+    .landing-fun-btn:hover {
+      filter: brightness(1.08);
+    }
+
+    .btn-xeri {
+      left: 31.5%;
+      top: 24.8%;
+      width: 43%;
+      height: 6.3%;
+    }
+
+    .btn-seven {
+      left: 31.5%;
+      top: 33.3%;
+      width: 43%;
+      height: 6.3%;
+    }
+
+    .btn-menu {
+      left: 9%;
+      top: 53%;
+      width: 40%;
+      height: 5.8%;
+      font-size: 1rem;
+    }
+
+    .btn-events {
+      left: 9%;
+      top: 63.2%;
+      width: 40%;
+      height: 5.8%;
+      font-size: 1rem;
+    }
+.menu-pages {
+  width: 96%;
+  margin: 12px auto 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.menu-page-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border: 1px solid var(--line);
+  background: white;
+}
+.landing-fun-row {
+  position: absolute;
+  left: 8%;
+  top: 86.5%;
+  display: flex;
+  gap: 4%;
+  width: 62%;
+  justify-content: flex-start;
+  z-index: 2;
+}
+
+.landing-fun-btn {
+  width: 30%;
+  aspect-ratio: 1 / 1;
+  border: 2px solid #111;
+  background: rgba(255,255,255,0.75);
+  cursor: pointer;
+  padding: 0;
+  overflow: hidden;
+}
+
+    .landing-fun-btn img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    .drink-list {
+      text-align: left;
+      line-height: 1.8;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+.music-screen {
+  padding: 0;
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.music-bg {
+  position: absolute;
+  inset: 0;
+  background: url('music-bg.png') center/cover no-repeat;
+}
+
+.music-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.28);
+}
+
+.music-content {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  padding: 20px 14px 30px;
+}
+
+.music-title {
+  text-align: center;
+  color: white;
+  font-size: 2rem;
+  font-weight: 900;
+  margin: 12px 0 28px;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.8);
+}
+
+.music-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  align-items: center;
+}
+
+.music-item-btn {
+  width: 78%;
+  max-width: 340px;
+  padding: 0;
+  border: 4px solid #111;
+  background: transparent;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.music-item-btn img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.menu-screen {
+  background: url('menu-bg.png') center/cover no-repeat;
+}
+
+.menu-screen .white-box,
+.menu-screen .top-tag {
+  background: rgba(255,255,255,0.9);
+}
+.landing-credit {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 10px;
+  text-align: center;
+  color: white;
+  font-size: 0.42rem;
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.7);
+  z-index: 2;
+}
+.menu-screen .white-box {
+  margin-top: 40px;
+}
+    @media (max-width: 390px) {
+      .landing-btn {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="overlay"></div>
+<div class="landing-credit">© Created by Kostakis v.1</div>
+    <section class="screen active landing-screen" id="homeScreen">
+      <div class="landing-image-wrap">
+          <div class="landing-bottom-title">Περισσότερη<br>διασκέδαση</div>
+        <img class="landing-image" src="home-landing.png" alt="Κούκλα καφεποιείο αρχική σελίδα">
+
+
+  <button class="landing-btn btn-xeri" id="xeriBtn">ΞΕΡΗ</button>
+  <button class="landing-btn btn-seven" id="sevenAriBtn">7-ΑΡΙ</button>
+  <button class="landing-btn btn-menu" id="menuBtn">MENU</button>
+  <button class="landing-btn btn-events" id="eventsBtn">EVENTS</button>
+
+<div class="landing-fun-row">
+  <button class="landing-fun-btn" id="podcastBtn" aria-label="Podcast">
+    <img src="podcast.png" alt="Podcast">
+  </button>
+  <button class="landing-fun-btn" id="videogameBtn" aria-label="Videogame">
+    <img src="videogame.png" alt="Videogame">
+  </button>
+  <button class="landing-fun-btn" id="musicBtn" aria-label="Music">
+    <img src="music.png" alt="Music">
+  </button>
+</div>
+      </div>
+    </section>
+
+<section class="screen menu-screen" id="drinkMenuScreen">
+  <div class="back-row">
+    <button class="back-btn" id="drinkMenuBackBtn">Πίσω</button>
+    <div class="top-tag">MENU</div>
+  </div>
+
+  <div class="menu-pages">
+    <img class="menu-page-img" src="menu1.jpg" alt="Menu page 1">
+    <img class="menu-page-img" src="menu2.jpg" alt="Menu page 2">
+    <img class="menu-page-img" src="menu3.jpg" alt="Menu page 3">
+    <img class="menu-page-img" src="menu4.jpg" alt="Menu page 4">
+  </div>
+</section>
+<section class="screen music-screen" id="musicScreen">
+  <div class="music-bg"></div>
+
+  <div class="music-content">
+    <div class="back-row">
+      <button class="back-btn" id="musicBackBtn">Πίσω</button>
+      <div class="top-tag">MUSIC</div>
+    </div>
+
+    <div class="music-title">LOCAL MUSIC</div>
+
+    <div class="music-list">
+      <button class="music-item-btn" id="stvrsBtn">
+        <img src="stvrs.png" alt="Σταύρος Χριστοδούλου">
+      </button>
+
+      <button class="music-item-btn" id="kaouBtn">
+        <img src="kaou.png" alt="Χρίστος Καουράνης">
+      </button>
+
+      <button class="music-item-btn" id="darkBtn">
+        <img src="dark.png" alt="Dark Poetry">
+      </button>
+
+      <button class="music-item-btn" id="proBtn">
+        <img src="pro.png" alt="Prodigee">
+      </button>
+    </div>
+  </div>
+</section>
+    <section class="screen" id="maxScreen">
+      <div class="back-row">
+        <button class="back-btn" id="maxBackBtn">Πίσω</button>
+        <div class="top-tag">ΞΕΡΗ</div>
+      </div>
+
+      <div class="white-box">ΕΠΕΛΕΞΕ ΑΡΙΘΜΟ<br>ΠΟΝΤΩΝ</div>
+
+      <div class="points-list">
+        <button class="pill point-btn" data-max="50">50</button>
+        <button class="pill point-btn" data-max="100">100</button>
+        <button class="pill point-btn" data-max="150">150</button>
+        <button class="pill point-btn" data-max="200">200</button>
+        <button class="pill point-btn" data-max="250">250</button>
+      </div>
+    </section>
+
+    <section class="screen" id="dealerScreen">
+      <div class="back-row">
+        <button class="back-btn" id="dealerBackBtn">Πίσω</button>
+        <div class="top-tag" id="dealerTopTag">ΞΕΡΗ 50</div>
+      </div>
+
+      <div class="dealer-card">
+        <div class="dealer-title">ΜΟΙΡΑΖΕΙ Ο</div>
+        <div class="dealer-name" id="dealerName">ΠΑΙΚΤΗΣ 1</div>
+        <div class="dealer-layout" id="dealerLayoutLarge">
+          <div class="table-center"></div>
+
+          <div class="player-dot player-top" data-pos="2">
+            <div class="player-head"></div>
+            <div class="player-body"></div>
+            <div>Π3</div>
+          </div>
+          <div class="player-dot player-left" data-pos="3">
+            <div class="player-head"></div>
+            <div class="player-body"></div>
+            <div>Π4</div>
+          </div>
+          <div class="player-dot player-bottom" data-pos="0">
+            <div class="player-head"></div>
+            <div class="player-phone"></div>
+            <div>Π1</div>
+          </div>
+          <div class="player-dot player-right" data-pos="1">
+            <div class="player-head"></div>
+            <div class="player-body"></div>
+            <div>Π2</div>
+          </div>
+        </div>
+        <button class="dealer-btn" id="dealerContinueBtn">ΣΥΝΕΧΕΙΑ</button>
+      </div>
+    </section>
+
+    <section class="screen" id="xeriGameScreen">
+      <div class="back-row">
+        <button class="back-btn" id="gameBackBtn">Πίσω</button>
+        <div class="top-tag" id="gameTopTag">ΞΕΡΗ 50</div>
+      </div>
+
+      <div class="table-wrap two-col">
+        <div class="team-col">
+          <div class="team-head"><input class="team-name" id="team1Name" value="ΟΜΑΔΑ 1"></div>
+          <div class="team-score-area">
+            <div class="total" id="team1Total">0</div>
+            <div class="rounds" id="team1Rounds"></div>
+          </div>
+          <div class="team-input-row">
+            <input class="score-input" id="team1Input" type="number" min="0" step="5" placeholder="-">
+          </div>
+        </div>
+
+        <div class="team-col">
+          <div class="team-head"><input class="team-name" id="team2Name" value="ΟΜΑΔΑ 2"></div>
+          <div class="team-score-area">
+            <div class="total" id="team2Total">0</div>
+            <div class="rounds" id="team2Rounds"></div>
+          </div>
+          <div class="team-input-row">
+            <input class="score-input" id="team2Input" type="number" min="0" step="5" placeholder="-">
+          </div>
+        </div>
+      </div>
+
+      <div class="action-row">
+        <button class="action-btn action-update" id="updateRoundBtn">ΕΝΗΜΕΡΩΣΗ</button>
+        <button class="action-btn action-correct" id="correctRoundBtn">ΔΙΟΡΘΩΣΗ</button>
+      </div>
+
+      <div class="dealer-mini">
+        <div class="dealer-mini-title">Μοιράζει</div>
+        <div class="dealer-mini-row" id="dealerMiniRowXeri">
+          <div class="mini-player" data-pos="0"><div class="mini-head"></div><div class="mini-phone"></div><div>Π1</div></div>
+          <div class="mini-player" data-pos="1"><div class="mini-head"></div><div class="mini-body"></div><div>Π2</div></div>
+          <div class="mini-player" data-pos="2"><div class="mini-head"></div><div class="mini-body"></div><div>Π3</div></div>
+          <div class="mini-player" data-pos="3"><div class="mini-head"></div><div class="mini-body"></div><div>Π4</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="screen" id="sevenGameScreen">
+      <div class="back-row">
+        <button class="back-btn" id="sevenBackBtn">Πίσω</button>
+        <div class="top-tag">7-ΑΡΙ</div>
+      </div>
+
+      <div class="round-badge odd-round" id="sevenRoundBadge">Γύρος 1 / 10 — Μονός γύρος</div>
+
+      <div class="table-wrap four-col odd-round" id="sevenTableWrap">
+        <div class="player-col">
+          <div class="player-head-row"><input class="player-name" id="p1Name" value="Π1"></div>
+          <div class="player-score-area">
+            <div class="small-total" id="p1Total">0</div>
+            <div class="rounds" id="p1Rounds"></div>
+          </div>
+          <div class="player-input-row"><input class="score-input small" id="p1Input" type="text" inputmode="tel" placeholder="-"></div>
+        </div>
+        <div class="player-col">
+          <div class="player-head-row"><input class="player-name" id="p2Name" value="Π2"></div>
+          <div class="player-score-area">
+            <div class="small-total" id="p2Total">0</div>
+            <div class="rounds" id="p2Rounds"></div>
+          </div>
+          <div class="player-input-row"><input class="score-input small" id="p2Input" type="text" inputmode="tel" placeholder="-"></div>
+        </div>
+        <div class="player-col">
+          <div class="player-head-row"><input class="player-name" id="p3Name" value="Π3"></div>
+          <div class="player-score-area">
+            <div class="small-total" id="p3Total">0</div>
+            <div class="rounds" id="p3Rounds"></div>
+          </div>
+          <div class="player-input-row"><input class="score-input small" id="p3Input" type="text" inputmode="tel" placeholder="-"></div>
+        </div>
+        <div class="player-col">
+          <div class="player-head-row"><input class="player-name" id="p4Name" value="Π4"></div>
+          <div class="player-score-area">
+            <div class="small-total" id="p4Total">0</div>
+            <div class="rounds" id="p4Rounds"></div>
+          </div>
+          <div class="player-input-row"><input class="score-input small" id="p4Input" type="text" inputmode="tel" placeholder="-"></div>
+        </div>
+      </div>
+
+      <div class="action-row">
+        <button class="action-btn action-update" id="sevenUpdateBtn">ΕΝΗΜΕΡΩΣΗ</button>
+        <button class="action-btn action-correct" id="sevenCorrectBtn">ΔΙΟΡΘΩΣΗ</button>
+      </div>
+
+      <div class="dealer-mini">
+        <div class="dealer-mini-title">Μοιράζει</div>
+        <div class="dealer-mini-row" id="dealerMiniRowSeven">
+          <div class="mini-player" data-pos="0"><div class="mini-head"></div><div class="mini-phone"></div><div>Π1</div></div>
+          <div class="mini-player" data-pos="1"><div class="mini-head"></div><div class="mini-body"></div><div>Π2</div></div>
+          <div class="mini-player" data-pos="2"><div class="mini-head"></div><div class="mini-body"></div><div>Π3</div></div>
+          <div class="mini-player" data-pos="3"><div class="mini-head"></div><div class="mini-body"></div><div>Π4</div></div>
+        </div>
+      </div>
+
+      <div class="ranking-box" id="rankingBox">
+        <h3>Τελική κατάταξη</h3>
+        <ol class="ranking-list" id="rankingList"></ol>
+        <div class="ranking-note" id="rankingNote"></div>
+      </div>
+    </section>
+  </div>
+
+  <div class="modal" id="confirmModal">
+    <div class="dialog">
+      <h3>Επιβεβαίωση</h3>
+      <p id="confirmText">Are you sure?</p>
+      <div class="dialog-actions">
+        <button class="secondary" id="cancelConfirm">Άκυρο</button>
+        <button class="primary" id="okConfirm">Ναι</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="winnerModal">
+    <div class="dialog">
+      <h3>Τέλος παιχνιδιού</h3>
+      <p id="winnerText">Team won</p>
+      <div class="dialog-actions">
+        <button class="primary" id="winnerOk">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const state = {
+      currentGame: 'xeri',
+      maxPoints: 50,
+      team1Name: 'ΟΜΑΔΑ 1',
+      team2Name: 'ΟΜΑΔΑ 2',
+      team1Rounds: [],
+      team2Rounds: [],
+      currentDealer: 0,
+      pendingAction: null,
+      sevenAri: {
+        names: ['Π1', 'Π2', 'Π3', 'Π4'],
+        rounds: [],
+        currentRound: 1,
+        rankingReady: false
+      }
+    };
+
+const screens = {
+  home: document.getElementById('homeScreen'),
+  drinkMenu: document.getElementById('drinkMenuScreen'),
+  music: document.getElementById('musicScreen'),
+  max: document.getElementById('maxScreen'),
+  dealer: document.getElementById('dealerScreen'),
+  xeri: document.getElementById('xeriGameScreen'),
+  seven: document.getElementById('sevenGameScreen')
+};
+
+    const team1Name = document.getElementById('team1Name');
+    const team2Name = document.getElementById('team2Name');
+    const team1Total = document.getElementById('team1Total');
+    const team2Total = document.getElementById('team2Total');
+    const team1Rounds = document.getElementById('team1Rounds');
+    const team2Rounds = document.getElementById('team2Rounds');
+    const team1Input = document.getElementById('team1Input');
+    const team2Input = document.getElementById('team2Input');
+    const gameTopTag = document.getElementById('gameTopTag');
+    const dealerTopTag = document.getElementById('dealerTopTag');
+    const dealerName = document.getElementById('dealerName');
+
+    const pNameInputs = [
+      document.getElementById('p1Name'),
+      document.getElementById('p2Name'),
+      document.getElementById('p3Name'),
+      document.getElementById('p4Name')
+    ];
+    const pTotalEls = [
+      document.getElementById('p1Total'),
+      document.getElementById('p2Total'),
+      document.getElementById('p3Total'),
+      document.getElementById('p4Total')
+    ];
+    const pRoundsEls = [
+      document.getElementById('p1Rounds'),
+      document.getElementById('p2Rounds'),
+      document.getElementById('p3Rounds'),
+      document.getElementById('p4Rounds')
+    ];
+    const pInputEls = [
+      document.getElementById('p1Input'),
+      document.getElementById('p2Input'),
+      document.getElementById('p3Input'),
+      document.getElementById('p4Input')
+    ];
+    const sevenRoundBadge = document.getElementById('sevenRoundBadge');
+    const sevenTableWrap = document.getElementById('sevenTableWrap');
+    const rankingBox = document.getElementById('rankingBox');
+    const rankingList = document.getElementById('rankingList');
+    const rankingNote = document.getElementById('rankingNote');
+
+    const confirmModal = document.getElementById('confirmModal');
+    const confirmText = document.getElementById('confirmText');
+    const winnerModal = document.getElementById('winnerModal');
+    const winnerText = document.getElementById('winnerText');
+
+    function showScreen(name, addToHistory = true) {
+      Object.values(screens).forEach(s => s.classList.remove('active'));
+      screens[name].classList.add('active');
+
+      if (addToHistory) {
+        history.pushState({ screen: name }, '', `#${name}`);
+      }
+    }
+
+    function totalOf(rounds) {
+      return rounds.reduce((sum, value) => sum + value, 0);
+    }
+
+    function syncXeriNames() {
+      state.team1Name = team1Name.value.trim() || 'ΟΜΑΔΑ 1';
+      state.team2Name = team2Name.value.trim() || 'ΟΜΑΔΑ 2';
+    }
+
+    function syncSevenNames() {
+      state.sevenAri.names = pNameInputs.map((el, i) => el.value.trim() || `Π${i + 1}`);
+    }
+
+    function dealerLabel(pos) {
+      return `ΠΑΙΚΤΗΣ ${pos + 1}`;
+    }
+
+    function renderDealer() {
+      const title = state.currentGame === 'seven' ? '7-ΑΡΙ' : `ΞΕΡΗ ${state.maxPoints}`;
+      dealerTopTag.textContent = title;
+      dealerName.textContent = dealerLabel(state.currentDealer);
+
+      document.querySelectorAll('#dealerLayoutLarge .player-dot').forEach(el => {
+        el.classList.toggle('active', Number(el.dataset.pos) === state.currentDealer);
+      });
+
+      const miniRowId = state.currentGame === 'seven'
+        ? '#dealerMiniRowSeven .mini-player'
+        : '#dealerMiniRowXeri .mini-player';
+
+      document.querySelectorAll(miniRowId).forEach(el => {
+        el.classList.toggle('active', Number(el.dataset.pos) === state.currentDealer);
+      });
+    }
+
+    function renderXeri() {
+      syncXeriNames();
+      const t1 = totalOf(state.team1Rounds);
+      const t2 = totalOf(state.team2Rounds);
+      gameTopTag.textContent = `ΞΕΡΗ ${state.maxPoints}`;
+      team1Total.textContent = t1;
+      team2Total.textContent = t2;
+      renderRounds(team1Rounds, state.team1Rounds);
+      renderRounds(team2Rounds, state.team2Rounds);
+    }
+
+    function renderSeven() {
+      syncSevenNames();
+      const totals = [0, 1, 2, 3].map(i =>
+        state.sevenAri.rounds.reduce((sum, round) => sum + round[i], 0)
+      );
+
+      pTotalEls.forEach((el, i) => el.textContent = totals[i]);
+      pRoundsEls.forEach((el, i) => renderRounds(el, state.sevenAri.rounds.map(round => round[i])));
+
+      const currentRound = Math.min(state.sevenAri.currentRound, 10);
+      const isEvenRound = currentRound % 2 === 0;
+
+      sevenRoundBadge.textContent = `Γύρος ${currentRound} / 10 — ${isEvenRound ? 'Ταϊστό' : 'Εφταρί'}`;
+      sevenRoundBadge.classList.toggle('even-round', isEvenRound);
+      sevenRoundBadge.classList.toggle('odd-round', !isEvenRound);
+      sevenTableWrap.classList.toggle('even-round', isEvenRound);
+      sevenTableWrap.classList.toggle('odd-round', !isEvenRound);
+
+      if (state.sevenAri.rankingReady) {
+        renderRanking(totals);
+      } else {
+        rankingBox.classList.remove('show');
+      }
+    }
+
+    function renderRanking(totals) {
+      const ranking = totals
+        .map((score, i) => ({ name: state.sevenAri.names[i], score }))
+        .sort((a, b) => b.score - a.score);
+
+      rankingList.innerHTML = '';
+      ranking.forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = `${item.name} — ${item.score}`;
+        rankingList.appendChild(li);
+      });
+
+      rankingNote.textContent = `${ranking[ranking.length - 1].name} is the looser.`;
+      rankingBox.classList.add('show');
+    }
+
+    function renderRounds(container, rounds) {
+      container.innerHTML = '';
+      if (!rounds.length) {
+        container.innerHTML = '<div class="round-item"><span>—</span><span>κανένας γύρος</span></div>';
+        return;
+      }
+
+      rounds.forEach((value, index) => {
+        const div = document.createElement('div');
+        div.className = 'round-item';
+        div.innerHTML = `<span>R${index + 1}</span><span>${value}</span>`;
+        container.appendChild(div);
+      });
+    }
+
+    function renderAll() {
+      renderDealer();
+      renderXeri();
+      renderSeven();
+    }
+
+    function resetXeriGame() {
+      state.team1Rounds = [];
+      state.team2Rounds = [];
+      team1Input.value = '';
+      team2Input.value = '';
+      team1Name.value = 'ΟΜΑΔΑ 1';
+      team2Name.value = 'ΟΜΑΔΑ 2';
+      state.team1Name = 'ΟΜΑΔΑ 1';
+      state.team2Name = 'ΟΜΑΔΑ 2';
+    }
+
+    function resetSevenGame() {
+      state.sevenAri.rounds = [];
+      state.sevenAri.currentRound = 1;
+      state.sevenAri.rankingReady = false;
+      state.sevenAri.names = ['Π1', 'Π2', 'Π3', 'Π4'];
+      pNameInputs.forEach((el, i) => el.value = `Π${i + 1}`);
+      pInputEls.forEach(el => el.value = '');
+    }
+
+    function resetToHome() {
+      resetXeriGame();
+      resetSevenGame();
+      state.currentDealer = Math.floor(Math.random() * 4);
+      renderAll();
+      showScreen('home');
+    }
+
+    function validXeriPair(v1, v2) {
+      const sum = v1 + v2;
+      return sum >= 25 && sum % 5 === 0;
+    }
+
+    function parseMaybeInt(value) {
+      const trimmed = value.trim();
+      if (trimmed === '') return null;
+      if (!/^-?\d+$/.test(trimmed)) return NaN;
+      return Number(trimmed);
+    }
+
+    function updateXeriRound() {
+      syncXeriNames();
+      const v1 = Number(team1Input.value);
+      const v2 = Number(team2Input.value);
+
+      if (!team1Input.value || !team2Input.value) {
+        alert('Βάλε σκορ και για τις δύο ομάδες.');
+        return;
+      }
+      if (Number.isNaN(v1) || Number.isNaN(v2) || v1 < 0 || v2 < 0) {
+        alert('Βάλε σωστά σκορ.');
+        return;
+      }
+
+      const sum = v1 + v2;
+      if (sum < 25) {
+        alert('Το άθροισμα του γύρου δεν μπορεί να είναι μικρότερο από 25.');
+        return;
+      }
+      if (!validXeriPair(v1, v2)) {
+        alert('Το σύνολο των δύο ομάδων πρέπει να διαιρείται με το 5.');
+        return;
+      }
+
+      state.team1Rounds.push(v1);
+      state.team2Rounds.push(v2);
+      state.currentDealer = (state.currentDealer + 1) % 4;
+      team1Input.value = '';
+      team2Input.value = '';
+      renderAll();
+      checkXeriWinner();
+    }
+
+    function updateSevenRound() {
+      if (state.sevenAri.currentRound > 10) {
+        alert('Το παιχνίδι έχει ολοκληρωθεί.');
+        return;
+      }
+
+      syncSevenNames();
+      const rawValues = pInputEls.map(el => parseMaybeInt(el.value));
+
+      if (rawValues.some(v => Number.isNaN(v))) {
+        alert('Βάλε σωστούς ακέραιους αριθμούς.');
+        return;
+      }
+
+      const roundNo = state.sevenAri.currentRound;
+      const filledIndices = rawValues.map((v, i) => v === null ? null : i).filter(v => v !== null);
+
+      if (filledIndices.length < 3) {
+        alert('Βάλε τουλάχιστον 3 σκορ.');
+        return;
+      }
+
+      if (filledIndices.length === 3) {
+        const missing = rawValues.findIndex(v => v === null);
+        const knownValues = rawValues.filter(v => v !== null);
+
+        if (roundNo % 2 === 1) {
+          const allowed = [32, 16, 8, 4];
+          const missingValue = allowed.find(v => !knownValues.includes(v));
+
+          if (missingValue === undefined) {
+            alert('Στους μονούς γύρους δεν βρέθηκε σωστή 4η τιμή.');
+            return;
+          }
+
+          rawValues[missing] = missingValue;
+          pInputEls[missing].value = missingValue;
+        } else {
+          const knownSum = knownValues.reduce((a, b) => a + b, 0);
+          rawValues[missing] = -32 - knownSum;
+          pInputEls[missing].value = rawValues[missing];
+        }
+      }
+
+      const values = rawValues;
+
+      if (roundNo % 2 === 1) {
+        const allowed = [32, 16, 8, 4];
+        const sortedValues = [...values].sort((a, b) => a - b);
+        const sortedAllowed = [...allowed].sort((a, b) => a - b);
+
+        if (sortedValues.join(',') !== sortedAllowed.join(',')) {
+          alert('Στους μονούς γύρους επιτρέπονται μόνο οι τιμές 32, 16, 8, 4 μία φορά η καθεμία.');
+          return;
+        }
+      } else {
+        const sum = values.reduce((a, b) => a + b, 0);
+        if (sum !== -32) {
+          alert('Στους ζυγούς γύρους το άθροισμα πρέπει να είναι -32.');
+          return;
+        }
+      }
+
+      state.sevenAri.rounds.push(values);
+
+      if (state.sevenAri.currentRound % 2 === 0) {
+        state.currentDealer = (state.currentDealer + 1) % 4;
+      }
+
+      state.sevenAri.currentRound += 1;
+      pInputEls.forEach(el => el.value = '');
+
+      if (state.sevenAri.rounds.length >= 10) {
+        state.sevenAri.rankingReady = true;
+      }
+
+      renderAll();
+    }
+
+    function checkXeriWinner() {
+      const t1 = totalOf(state.team1Rounds);
+      const t2 = totalOf(state.team2Rounds);
+
+      if (t1 >= state.maxPoints) {
+        winnerText.textContent = `Team ${state.team1Name} won`;
+        winnerModal.classList.add('show');
+      } else if (t2 >= state.maxPoints) {
+        winnerText.textContent = `Team ${state.team2Name} won`;
+        winnerModal.classList.add('show');
+      }
+    }
+
+    function confirmAction(text, action) {
+      state.pendingAction = action;
+      confirmText.textContent = text;
+      confirmModal.classList.add('show');
+    }
+
+    document.getElementById('xeriBtn').addEventListener('click', () => {
+      state.currentGame = 'xeri';
+      showScreen('max');
+    });
+
+    document.getElementById('sevenAriBtn').addEventListener('click', () => {
+      state.currentGame = 'seven';
+      resetSevenGame();
+      state.currentDealer = Math.floor(Math.random() * 4);
+      renderAll();
+      showScreen('dealer');
+    });
+
+    document.getElementById('menuBtn').addEventListener('click', () => {
+      showScreen('drinkMenu');
+    });
+
+    document.getElementById('eventsBtn').addEventListener('click', () => {
+      window.open('https://www.instagram.com/kafepoieiokoukla/', '_blank');
+    });
+
+    document.getElementById('podcastBtn').addEventListener('click', () => {
+      window.open('https://www.youtube.com/@AstroKafeneion', '_blank');
+    });
+
+    document.getElementById('videogameBtn').addEventListener('click', () => {
+      window.open('https://akonstan.itch.io/lympia-texas-villagers-outlaw', '_blank');
+    });
+
+    document.getElementById('drinkMenuBackBtn').addEventListener('click', () => {
+      showScreen('home');
+    });
+
+    document.getElementById('maxBackBtn').addEventListener('click', () => showScreen('home'));
+
+    document.getElementById('dealerBackBtn').addEventListener('click', () => {
+      showScreen(state.currentGame === 'seven' ? 'home' : 'max');
+    });
+
+    document.getElementById('dealerContinueBtn').addEventListener('click', () => {
+      showScreen(state.currentGame === 'seven' ? 'seven' : 'xeri');
+    });
+
+    document.querySelectorAll('.point-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        state.currentGame = 'xeri';
+        state.maxPoints = Number(btn.dataset.max);
+        resetXeriGame();
+        state.currentDealer = Math.floor(Math.random() * 4);
+        renderAll();
+        showScreen('dealer');
+      });
+    });
+
+    document.getElementById('gameBackBtn').addEventListener('click', () => {
+      confirmAction('Are you sure?', () => {
+        resetToHome();
+      });
+    });
+
+    document.getElementById('sevenBackBtn').addEventListener('click', () => {
+      confirmAction('Are you sure?', () => {
+        resetToHome();
+      });
+    });
+
+    document.getElementById('updateRoundBtn').addEventListener('click', updateXeriRound);
+    document.getElementById('sevenUpdateBtn').addEventListener('click', updateSevenRound);
+
+    document.getElementById('correctRoundBtn').addEventListener('click', () => {
+      if (!state.team1Rounds.length || !state.team2Rounds.length) {
+        alert('Δεν υπάρχει προηγούμενος γύρος για διόρθωση.');
+        return;
+      }
+
+      confirmAction('Are you sure?', () => {
+        state.team1Rounds.pop();
+        state.team2Rounds.pop();
+        state.currentDealer = (state.currentDealer + 3) % 4;
+        renderAll();
+      });
+    });
+
+    document.getElementById('sevenCorrectBtn').addEventListener('click', () => {
+      if (!state.sevenAri.rounds.length) {
+        alert('Δεν υπάρχει προηγούμενος γύρος για διόρθωση.');
+        return;
+      }
+
+      confirmAction('Are you sure?', () => {
+        const removedRound = state.sevenAri.currentRound - 1;
+        state.sevenAri.rounds.pop();
+
+        if (removedRound % 2 === 0) {
+          state.currentDealer = (state.currentDealer + 3) % 4;
+        }
+
+        state.sevenAri.currentRound = Math.max(1, state.sevenAri.currentRound - 1);
+        state.sevenAri.rankingReady = false;
+        renderAll();
+      });
+    });
+
+    team1Name.addEventListener('input', renderAll);
+    team2Name.addEventListener('input', renderAll);
+    pNameInputs.forEach(input => input.addEventListener('input', renderAll));
+
+    document.getElementById('cancelConfirm').addEventListener('click', () => {
+      confirmModal.classList.remove('show');
+      state.pendingAction = null;
+    });
+
+document.getElementById('okConfirm').addEventListener('click', () => {
+  confirmModal.classList.remove('show');
+  state.pendingAction = null;
+  showScreen('home');
+});
+
+    document.getElementById('winnerOk').addEventListener('click', () => {
+      winnerModal.classList.remove('show');
+      resetToHome();
+    });
+document.getElementById('musicBtn').addEventListener('click', () => {
+  showScreen('music');
+});
+
+document.getElementById('musicBackBtn').addEventListener('click', () => {
+  showScreen('home');
+});
+
+document.getElementById('stvrsBtn').addEventListener('click', () => {
+  window.open('https://www.youtube.com/watch?v=vaFUGVlfmvU&list=RDvaFUGVlfmvU&start_radio=1', '_blank');
+});
+
+document.getElementById('kaouBtn').addEventListener('click', () => {
+  window.open('https://www.youtube.com/watch?v=SCx2Et0IyQM&list=RDSCx2Et0IyQM&start_radio=1', '_blank');
+});
+
+document.getElementById('darkBtn').addEventListener('click', () => {
+  window.open('https://www.youtube.com/watch?v=MtDnLLz5oUk&list=RDEMVp6yC5SIw7HLUi2B5yhdfw&start_radio=1', '_blank');
+});
+
+document.getElementById('proBtn').addEventListener('click', () => {
+  window.open('https://www.youtube.com/watch?v=pHW3yKuozcU', '_blank');
+});
+    window.addEventListener('popstate', (event) => {
+      const targetScreen = event.state?.screen || 'home';
+      const currentScreen = Object.keys(screens).find(
+        key => screens[key].classList.contains('active')
+      );
+
+      if (currentScreen === 'xeri' || currentScreen === 'seven') {
+        confirmAction('Are you sure?', () => {
+          Object.values(screens).forEach(s => s.classList.remove('active'));
+          screens[targetScreen].classList.add('active');
+        });
+
+        history.pushState({ screen: currentScreen }, '', `#${currentScreen}`);
+        return;
+      }
+
+      Object.values(screens).forEach(s => s.classList.remove('active'));
+      screens[targetScreen].classList.add('active');
+    });
+
+    history.replaceState({ screen: 'home' }, '', '#home');
+    state.currentDealer = Math.floor(Math.random() * 4);
+    renderAll();
+  </script>
+</body>
+</html>
