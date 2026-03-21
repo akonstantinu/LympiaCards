@@ -1548,34 +1548,29 @@ document.getElementById('darkBtn').addEventListener('click', () => {
 document.getElementById('proBtn').addEventListener('click', () => {
   window.open('https://www.youtube.com/watch?v=pHW3yKuozcU', '_blank');
 });
-let ignoreNextPop = false;
+    window.addEventListener('popstate', (event) => {
+      const targetScreen = event.state?.screen || 'home';
+      const currentScreen = Object.keys(screens).find(
+        key => screens[key].classList.contains('active')
+      );
 
-window.addEventListener('popstate', (event) => {
-  if (ignoreNextPop) {
-    ignoreNextPop = false;
-    return;
-  }
+      if (currentScreen === 'xeri' || currentScreen === 'seven') {
+        confirmAction('Are you sure?', () => {
+          Object.values(screens).forEach(s => s.classList.remove('active'));
+          screens[targetScreen].classList.add('active');
+        });
 
-  const targetScreen = event.state?.screen || 'home';
-  const currentScreen = Object.keys(screens).find(
-    key => screens[key].classList.contains('active')
-  );
+        history.pushState({ screen: currentScreen }, '', `#${currentScreen}`);
+        return;
+      }
 
-  if (currentScreen === 'xeri' || currentScreen === 'seven') {
-    history.pushState({ screen: currentScreen }, '', `#${currentScreen}`);
-
-    confirmAction('Are you sure?', () => {
       Object.values(screens).forEach(s => s.classList.remove('active'));
       screens[targetScreen].classList.add('active');
-      history.replaceState({ screen: targetScreen }, '', `#${targetScreen}`);
     });
 
-    return;
-  }
-
-  Object.values(screens).forEach(s => s.classList.remove('active'));
-  screens[targetScreen].classList.add('active');
-});
+    history.replaceState({ screen: 'home' }, '', '#home');
+    state.currentDealer = Math.floor(Math.random() * 4);
+    renderAll();
   </script>
 </body>
 </html>
