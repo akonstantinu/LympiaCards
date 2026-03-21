@@ -1342,6 +1342,46 @@
     const confirmText = document.getElementById('confirmText');
     const winnerModal = document.getElementById('winnerModal');
     const winnerText = document.getElementById('winnerText');
+     function saveAppState() {
+  localStorage.setItem('kafeneioAppState', JSON.stringify(state));
+}
+
+function loadAppState() {
+  const saved = localStorage.getItem('kafeneioAppState');
+  if (!saved) return false;
+
+  try {
+    const parsed = JSON.parse(saved);
+
+    Object.assign(state, parsed);
+
+    if (!state.sevenAri) {
+      state.sevenAri = {
+        names: ['Π1', 'Π2', 'Π3', 'Π4'],
+        rounds: [],
+        currentRound: 1,
+        rankingReady: false
+      };
+    }
+
+    if (!state.kumkan) {
+      state.kumkan = {
+        playerCount: 2,
+        maxPoints: 100,
+        names: [],
+        totals: [],
+        rounds: [],
+        eliminated: [],
+        currentDealer: 0
+      };
+    }
+
+    return true;
+  } catch (e) {
+    console.error('State load failed', e);
+    return false;
+  }
+}
 function isConfirmOpen() {
   return confirmModal.classList.contains('show');
 }
@@ -1569,6 +1609,7 @@ function showScreen(name, addToHistory = true) {
       renderXeri();
       renderSeven();
       renderKumkan();
+      saveAppState();
     }
 
     function resetXeriGame() {
@@ -1596,6 +1637,7 @@ function showScreen(name, addToHistory = true) {
       resetSevenGame();
       resetKumkanGame();
       state.currentDealer = Math.floor(Math.random() * 4);
+      localStorage.removeItem('kafeneioAppState');
       renderAll();
       showScreen('home');
     }
@@ -2033,9 +2075,15 @@ window.addEventListener('popstate', (event) => {
   screens[targetScreen].classList.add('active');
 });
 
-history.replaceState({ screen: 'home', safe: true }, '', '#home');
-    state.currentDealer = Math.floor(Math.random() * 4);
-    renderAll();
+history.replaceState({ screen: 'home' }, '', '#home');
+
+const restored = loadAppState();
+
+if (!restored) {
+  state.currentDealer = Math.floor(Math.random() * 4);
+}
+
+renderAll();
   </script>
 </body>
 </html>
