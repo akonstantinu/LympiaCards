@@ -785,7 +785,18 @@
 .menu-screen .top-tag {
   background: rgba(255,255,255,0.9);
 }
-
+.landing-credit {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 10px;
+  text-align: center;
+  color: white;
+  font-size: 0.42rem;
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.7);
+  z-index: 2;
+}
 .menu-screen .white-box {
   margin-top: 40px;
 }
@@ -799,7 +810,7 @@
 <body>
   <div class="app">
     <div class="overlay"></div>
-
+<div class="landing-credit">© Created by Kostakis v.1</div>
     <section class="screen active landing-screen" id="homeScreen">
       <div class="landing-image-wrap">
           <div class="landing-bottom-title">Περισσότερη<br>διασκέδαση</div>
@@ -1530,11 +1541,11 @@ const screens = {
       state.pendingAction = null;
     });
 
-    document.getElementById('okConfirm').addEventListener('click', () => {
-      confirmModal.classList.remove('show');
-      if (state.pendingAction) state.pendingAction();
-      state.pendingAction = null;
-    });
+document.getElementById('okConfirm').addEventListener('click', () => {
+  confirmModal.classList.remove('show');
+  state.pendingAction = null;
+  showScreen('home');
+});
 
     document.getElementById('winnerOk').addEventListener('click', () => {
       winnerModal.classList.remove('show');
