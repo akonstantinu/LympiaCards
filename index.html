@@ -1967,11 +1967,11 @@
       state.pendingAction = null;
     });
 
-    document.getElementById('okConfirm').addEventListener('click', () => {
-      confirmModal.classList.remove('show');
-      if (state.pendingAction) state.pendingAction();
-      state.pendingAction = null;
-    });
+document.getElementById('okConfirm').addEventListener('click', () => {
+  confirmModal.classList.remove('show');
+  state.pendingAction = null;
+  showScreen('home');
+});
 
     document.getElementById('winnerOk').addEventListener('click', () => {
       winnerModal.classList.remove('show');
