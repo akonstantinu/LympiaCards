@@ -1417,7 +1417,7 @@ const screens = {
     });
 
     document.getElementById('menuBtn').addEventListener('click', () => {
-      showScreen('drinkMenu');
+      window.open('menu.pdf', '_blank');
     });
 
     document.getElementById('eventsBtn').addEventListener('click', () => {
@@ -1548,29 +1548,34 @@ document.getElementById('darkBtn').addEventListener('click', () => {
 document.getElementById('proBtn').addEventListener('click', () => {
   window.open('https://www.youtube.com/watch?v=pHW3yKuozcU', '_blank');
 });
-    window.addEventListener('popstate', (event) => {
-      const targetScreen = event.state?.screen || 'home';
-      const currentScreen = Object.keys(screens).find(
-        key => screens[key].classList.contains('active')
-      );
+let ignoreNextPop = false;
 
-      if (currentScreen === 'xeri' || currentScreen === 'seven') {
-        confirmAction('Are you sure?', () => {
-          Object.values(screens).forEach(s => s.classList.remove('active'));
-          screens[targetScreen].classList.add('active');
-        });
+window.addEventListener('popstate', (event) => {
+  if (ignoreNextPop) {
+    ignoreNextPop = false;
+    return;
+  }
 
-        history.pushState({ screen: currentScreen }, '', `#${currentScreen}`);
-        return;
-      }
+  const targetScreen = event.state?.screen || 'home';
+  const currentScreen = Object.keys(screens).find(
+    key => screens[key].classList.contains('active')
+  );
 
+  if (currentScreen === 'xeri' || currentScreen === 'seven') {
+    history.pushState({ screen: currentScreen }, '', `#${currentScreen}`);
+
+    confirmAction('Are you sure?', () => {
       Object.values(screens).forEach(s => s.classList.remove('active'));
       screens[targetScreen].classList.add('active');
+      history.replaceState({ screen: targetScreen }, '', `#${targetScreen}`);
     });
 
-    history.replaceState({ screen: 'home' }, '', '#home');
-    state.currentDealer = Math.floor(Math.random() * 4);
-    renderAll();
+    return;
+  }
+
+  Object.values(screens).forEach(s => s.classList.remove('active'));
+  screens[targetScreen].classList.add('active');
+});
   </script>
 </body>
 </html>
