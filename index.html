@@ -1347,10 +1347,18 @@ function getCurrentScreenName() {
 }
 
 function saveAppState() {
+  const currentScreen = getCurrentScreenName();
+
+  if (currentScreen === 'home') {
+    localStorage.removeItem('kafeneioAppState');
+    return;
+  }
+
   const payload = {
     state,
-    currentScreen: getCurrentScreenName()
+    currentScreen
   };
+
   localStorage.setItem('kafeneioAppState', JSON.stringify(payload));
 }
 function loadAppState() {
@@ -1641,15 +1649,19 @@ function showScreen(name, addToHistory = true) {
       pInputEls.forEach(el => el.value = '');
     }
 
-    function resetToHome() {
-      resetXeriGame();
-      resetSevenGame();
-      resetKumkanGame();
-      state.currentDealer = Math.floor(Math.random() * 4);
-      localStorage.removeItem('kafeneioAppState');
-      renderAll();
-      showScreen('home');
-    }
+function resetToHome() {
+  resetXeriGame();
+  resetSevenGame();
+  resetKumkanGame();
+
+  state.currentGame = 'xeri';
+  state.currentDealer = Math.floor(Math.random() * 4);
+
+  showScreen('home', false);
+  renderAll();
+
+  localStorage.removeItem('kafeneioAppState');
+}
 
     function validXeriPair(v1, v2) {
       const sum = v1 + v2;
