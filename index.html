@@ -1342,18 +1342,27 @@
     const confirmText = document.getElementById('confirmText');
     const winnerModal = document.getElementById('winnerModal');
     const winnerText = document.getElementById('winnerText');
-     function saveAppState() {
-  localStorage.setItem('kafeneioAppState', JSON.stringify(state));
+function getCurrentScreenName() {
+  return Object.keys(screens).find(key => screens[key].classList.contains('active')) || 'home';
 }
 
+function saveAppState() {
+  const payload = {
+    state,
+    currentScreen: getCurrentScreenName()
+  };
+  localStorage.setItem('kafeneioAppState', JSON.stringify(payload));
+}
 function loadAppState() {
   const saved = localStorage.getItem('kafeneioAppState');
-  if (!saved) return false;
+  if (!saved) return null;
 
   try {
     const parsed = JSON.parse(saved);
 
-    Object.assign(state, parsed);
+    if (!parsed.state) return null;
+
+    Object.assign(state, parsed.state);
 
     if (!state.sevenAri) {
       state.sevenAri = {
@@ -1376,10 +1385,10 @@ function loadAppState() {
       };
     }
 
-    return true;
+    return parsed.currentScreen || 'home';
   } catch (e) {
     console.error('State load failed', e);
-    return false;
+    return null;
   }
 }
 function isConfirmOpen() {
@@ -1801,9 +1810,9 @@ function showScreen(name, addToHistory = true) {
         }
       });
 
-      state.kumkan.rounds.push(roundValues);
-      state.kumkan.currentDealer = (state.kumkan.currentDealer + 1) % state.kumkan.playerCount;
-      renderKumkan();
+state.kumkan.rounds.push(roundValues);
+state.kumkan.currentDealer = (state.kumkan.currentDealer + 1) % state.kumkan.playerCount;
+renderAll();
     }
 function confirmAction(text, action) {
   state.pendingAction = action;
@@ -2032,8 +2041,12 @@ function confirmAction(text, action) {
 
 document.getElementById('okConfirm').addEventListener('click', () => {
   confirmModal.classList.remove('show');
+
+  if (state.pendingAction) {
+    state.pendingAction();
+  }
+
   state.pendingAction = null;
-  showScreen('home');
 });
 
     document.getElementById('winnerOk').addEventListener('click', () => {
@@ -2077,10 +2090,13 @@ window.addEventListener('popstate', (event) => {
 
 history.replaceState({ screen: 'home' }, '', '#home');
 
-const restored = loadAppState();
+const restoredScreen = loadAppState();
 
-if (!restored) {
+if (!restoredScreen) {
   state.currentDealer = Math.floor(Math.random() * 4);
+  showScreen('home', false);
+} else {
+  showScreen(restoredScreen, false);
 }
 
 renderAll();
