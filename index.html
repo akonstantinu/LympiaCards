@@ -670,7 +670,21 @@
       height: 5.8%;
       font-size: 1rem;
     }
+.pdf-wrap {
+  width: 96%;
+  margin: 12px auto 0;
+  height: calc(100vh - 110px);
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,0.92);
+  overflow: hidden;
+}
 
+.pdf-frame {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: white;
+}
 .landing-fun-row {
   position: absolute;
   left: 8%;
@@ -811,18 +825,16 @@
       </div>
     </section>
 
-    <section class="screen menu-screen" id="drinkMenuScreen">
-      <div class="back-row">
-        <button class="back-btn" id="drinkMenuBackBtn">Πίσω</button>
-        <div class="top-tag">MENU</div>
-      </div>
+<section class="screen menu-screen" id="drinkMenuScreen">
+  <div class="back-row">
+    <button class="back-btn" id="drinkMenuBackBtn">Πίσω</button>
+    <div class="top-tag">MENU</div>
+  </div>
 
-      <div class="white-box">
-        <div class="drink-list">
-          Σόδα Λεμονάδα — 2.00€<br>
-        </div>
-      </div>
-    </section>
+  <div class="pdf-wrap">
+    <iframe class="pdf-frame" src="menu.pdf#view=FitH" title="Menu PDF"></iframe>
+  </div>
+</section>
 <section class="screen music-screen" id="musicScreen">
   <div class="music-bg"></div>
 
@@ -1417,7 +1429,7 @@ const screens = {
     });
 
     document.getElementById('menuBtn').addEventListener('click', () => {
-      window.open('menu.pdf', '_blank');
+      showScreen('drinkMenu');
     });
 
     document.getElementById('eventsBtn').addEventListener('click', () => {
