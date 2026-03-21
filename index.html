@@ -1342,12 +1342,28 @@
     const confirmText = document.getElementById('confirmText');
     const winnerModal = document.getElementById('winnerModal');
     const winnerText = document.getElementById('winnerText');
+function isConfirmOpen() {
+  return confirmModal.classList.contains('show');
+}
+      function pushSafeState(screenName) {
+  history.pushState(
+    { screen: screenName, safe: true, t: Date.now() },
+    '',
+    `#${screenName}`
+  );
+}
+function showScreen(name, addToHistory = true) {
+  Object.values(screens).forEach(s => s.classList.remove('active'));
+  screens[name].classList.add('active');
 
-    function showScreen(name, addToHistory = true) {
-      Object.values(screens).forEach(s => s.classList.remove('active'));
-      screens[name].classList.add('active');
-      if (addToHistory) history.pushState({ screen: name }, '', `#${name}`);
+  if (addToHistory) {
+    pushSafeState(name);
+
+    if (name === 'xeri' || name === 'seven' || name === 'kumkanGame') {
+      pushSafeState(name);
     }
+  }
+}
 
     function totalOf(rounds) {
       return rounds.reduce((sum, value) => sum + value, 0);
@@ -1747,7 +1763,17 @@
       state.kumkan.currentDealer = (state.kumkan.currentDealer + 1) % state.kumkan.playerCount;
       renderKumkan();
     }
+function confirmAction(text, action) {
+  state.pendingAction = action;
+  confirmText.textContent = text;
+  confirmModal.classList.add('show');
 
+  const currentScreen = Object.keys(screens).find(
+    key => screens[key].classList.contains('active')
+  );
+
+  pushSafeState(currentScreen || 'home');
+}
     function correctKumkanRound() {
       if (!state.kumkan.rounds.length) {
         alert('Δεν υπάρχει προηγούμενος γύρος για διόρθωση.');
@@ -1779,11 +1805,6 @@
       }
     }
 
-    function confirmAction(text, action) {
-      state.pendingAction = action;
-      confirmText.textContent = text;
-      confirmModal.classList.add('show');
-    }
 
     document.getElementById('xeriBtn').addEventListener('click', () => {
       state.currentGame = 'xeri';
@@ -1978,27 +1999,41 @@ document.getElementById('okConfirm').addEventListener('click', () => {
       resetToHome();
     });
 
-    window.addEventListener('popstate', (event) => {
-      const targetScreen = event.state?.screen || 'home';
-      const currentScreen = Object.keys(screens).find(
-        key => screens[key].classList.contains('active')
-      );
+window.addEventListener('popstate', (event) => {
+  const currentScreen = Object.keys(screens).find(
+    key => screens[key].classList.contains('active')
+  );
 
-      if (currentScreen === 'xeri' || currentScreen === 'seven' || currentScreen === 'kumkanGame') {
-        confirmAction('Are you sure?', () => {
-          Object.values(screens).forEach(s => s.classList.remove('active'));
-          screens[targetScreen].classList.add('active');
-        });
+  const inGame =
+    currentScreen === 'xeri' ||
+    currentScreen === 'seven' ||
+    currentScreen === 'kumkanGame';
 
-        history.pushState({ screen: currentScreen }, '', `#${currentScreen}`);
-        return;
-      }
+  if (confirmModal.classList.contains('show')) {
+    confirmModal.classList.remove('show');
+    state.pendingAction = null;
 
-      Object.values(screens).forEach(s => s.classList.remove('active'));
-      screens[targetScreen].classList.add('active');
+    if (inGame) {
+      pushSafeState(currentScreen);
+    }
+    return;
+  }
+
+  if (inGame) {
+    confirmAction('Are you sure?', () => {
+      resetToHome();
     });
 
-    history.replaceState({ screen: 'home' }, '', '#home');
+    pushSafeState(currentScreen);
+    return;
+  }
+
+  const targetScreen = event.state?.screen || 'home';
+  Object.values(screens).forEach(s => s.classList.remove('active'));
+  screens[targetScreen].classList.add('active');
+});
+
+history.replaceState({ screen: 'home', safe: true }, '', '#home');
     state.currentDealer = Math.floor(Math.random() * 4);
     renderAll();
   </script>
