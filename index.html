@@ -670,19 +670,19 @@
       height: 5.8%;
       font-size: 1rem;
     }
-.pdf-wrap {
+.menu-pages {
   width: 96%;
-  margin: 12px auto 0;
-  height: calc(100vh - 110px);
-  border: 1px solid var(--line);
-  background: rgba(255,255,255,0.92);
-  overflow: hidden;
+  margin: 12px auto 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
 }
 
-.pdf-frame {
+.menu-page-img {
   width: 100%;
-  height: 100%;
-  border: 0;
+  height: auto;
+  display: block;
+  border: 1px solid var(--line);
   background: white;
 }
 .landing-fun-row {
@@ -831,8 +831,11 @@
     <div class="top-tag">MENU</div>
   </div>
 
-  <div class="pdf-wrap">
-    <iframe class="pdf-frame" src="menu.pdf#view=FitH" title="Menu PDF"></iframe>
+  <div class="menu-pages">
+    <img class="menu-page-img" src="menu1.jpg" alt="Menu page 1">
+    <img class="menu-page-img" src="menu2.jpg" alt="Menu page 2">
+    <img class="menu-page-img" src="menu3.jpg" alt="Menu page 3">
+    <img class="menu-page-img" src="menu4.jpg" alt="Menu page 4">
   </div>
 </section>
 <section class="screen music-screen" id="musicScreen">
